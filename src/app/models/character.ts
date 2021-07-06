@@ -1,5 +1,7 @@
 
 export class Character {
+  name: string;
+
   body: number;
 
   stamina: number;

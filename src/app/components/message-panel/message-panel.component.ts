@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-message-panel',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MessagePanelComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _messageService: MessageService) { }
+
+  public messageBuffer: string[] = [];
+  public messageBufferSize: number = 10;
 
   ngOnInit(): void {
+    this._messageService.msgFeed.subscribe(x => this.onMessage(x));
+  }
+
+  onMessage(msg: string): void {
+    this.messageBuffer.push(msg);
+    while (this.messageBuffer.length > this.messageBufferSize) {
+      this.messageBuffer.splice(0,1);
+    }
   }
 
 }

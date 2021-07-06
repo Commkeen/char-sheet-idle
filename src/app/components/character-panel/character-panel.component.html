@@ -1,1 +1,33 @@
-<p>character-panel works!</p>
+<div fxLayout="row" class="game-section">
+  <div fxLayout="column" class="reroll-panel">
+    <game-button (click)="rollNewCharacter()">Roll New Character</game-button>
+    <span *ngIf="getCharacter() != null">
+    <div>Current die: {{dieCount}}d{{dieFaces}}</div>
+    <br />
+    <div>AP: {{ap}}</div>
+    <game-button *ngIf="getNextDieCost() != null" (click)="upgradeDie()">
+      Upgrade Die: {{getNextDieCost()}} AP
+    </game-button>
+    </span>
+  </div>
+  <div fxLayout="row" class="character-sheet" *ngIf="getCharacter() != null">
+    <div fxLayout="column" class="character-sheet-left">
+      <h2>{{name}}</h2>
+      <div fxLayout="row">
+        <div fxFlex="80">Stamina: {{stamina | displayNumber}}/{{maxStamina}}</div>
+        <game-button (click)="rest()">Rest</game-button>
+      </div>
+      <progress-bar [value]="stamina" [max]="maxStamina"></progress-bar>
+      <br />
+      <div>Level {{level}}</div>
+      <div>XP: {{xp}}/{{xpMax}}</div>
+      <progress-bar [value]="xp" [max]="xpMax"></progress-bar>
+    </div>
+    <div fxLayout="column" class="character-sheet-right">
+      <div>Resting at the inn</div>
+      <br />
+      <br />
+      <div>Body: {{body}}</div>
+    </div>
+  </div>
+</div>

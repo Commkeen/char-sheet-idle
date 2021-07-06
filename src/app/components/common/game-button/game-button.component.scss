@@ -1,0 +1,19 @@
+.game-btn {
+  display: flex;
+  border: 2px solid darkslategray;
+  border-radius: 3px;
+  min-height: 1.4em;
+  font-size: 9pt;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.text {
+  width: 100%;
+  height: 100%;
+  margin: 0.3em;
+  text-align: center;
+  pointer-events: none;
+  font-weight: bold;
+}

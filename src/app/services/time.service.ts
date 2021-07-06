@@ -17,6 +17,6 @@ export class TimeService {
     if (this._timerSubscription != null) {
       this._timerSubscription.unsubscribe();
     }
-    this._timerSubscription = interval(tickRate).subscribe(x => this.tick.next(tickRate*100));
+    this._timerSubscription = interval(tickRate).subscribe(x => this.tick.next(tickRate/1000));
   }
 }
