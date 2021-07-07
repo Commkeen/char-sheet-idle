@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Character } from '../models/character';
 import { Venture } from '../models/venture';
 import { DieDef, DIE_LIBRARY } from '../staticData/dieDefinitions';
+import { EncounterDef, ENCOUNTER_LIBRARY } from '../staticData/encounterDefinitions';
 import { VentureDef, VENTURE_LIBRARY } from '../staticData/ventureDefinitions';
 import { MessageService } from './message.service';
 import { TimeService } from './time.service';
@@ -63,8 +64,10 @@ export class GameService {
         this.startEncounter(venture);
       }
 
-      venture.progress += 7*this.character.body*dT;
-      this.character.stamina -= dT;
+      const encDef = this.getEncounterDef(venture.encounterName);
+
+      venture.progress += 7*this.character.body*encDef.getSkill("melee")*dT;
+      this.character.stamina -= dT*encDef.staminaDrain;
 
       if (this.character.stamina <= 0) {this.resting = true;}
 
@@ -73,7 +76,7 @@ export class GameService {
         venture.progress = 0;
         this._messageService.addMessage("You slay the " + venture.encounterName + ".");
         this.startEncounter(venture);
-        this.gainXp(Math.floor(Math.random()*75 + 75));
+        this.gainXp(encDef.xpReward);
       }
 
     }
@@ -81,7 +84,9 @@ export class GameService {
     // Degen venture progress
     this.ventures.forEach(x => {
       if (x.progress > 0 && (this.resting || this.targetVenture != x.name)) {
-        x.progress -= 4*dT;
+        const encDef = this.getEncounterDef(x.encounterName);
+        const progDegen = x.progressMax*(encDef.progressDegenPct/100);
+        x.progress -= progDegen*dT;
         if (x.progress <= 0) {
           x.progress = 0;
           x.encounterName = null;
@@ -157,6 +162,10 @@ export class GameService {
     return VENTURE_LIBRARY.find(x => x.name == name);
   }
 
+  getEncounterDef(name: string): EncounterDef {
+    return ENCOUNTER_LIBRARY.find(x => x.name == name);
+  }
+
   selectVenture(venture: Venture): void {
     this.targetVenture = venture.name;
   }
@@ -164,7 +173,9 @@ export class GameService {
   startEncounter(venture: Venture): void {
     const def = this.getVentureDef(venture.name);
     const encounter = def.getRandomEncounter();
+    const encDef = this.getEncounterDef(encounter);
     venture.encounterName = encounter;
+    venture.progressMax = 25*Math.pow(encDef.progressNeeded, 4.5);
   }
 
   //======Die Operations======
