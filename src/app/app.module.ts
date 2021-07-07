@@ -10,6 +10,7 @@ import { GameButtonComponent } from './components/common/game-button/game-button
 import { ProgressBarComponent } from './components/common/progress-bar/progress-bar.component';
 import { DisplayNumberPipe } from './pipes/display-number.pipe';
 import { SkillPanelComponent } from './components/skill-panel/skill-panel.component';
+import { StatusPanelComponent } from './components/status-panel/status-panel.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SkillPanelComponent } from './components/skill-panel/skill-panel.compon
     GameButtonComponent,
     ProgressBarComponent,
     DisplayNumberPipe,
-    SkillPanelComponent
+    SkillPanelComponent,
+    StatusPanelComponent
   ],
   imports: [
     BrowserModule,

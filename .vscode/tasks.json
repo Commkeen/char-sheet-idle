@@ -8,6 +8,14 @@
 			"problemMatcher": [],
 			"label": "npm: start",
 			"detail": "ng serve"
+		},
+    {
+			"type": "npm",
+			"script": "build --output-path docs --base-href /char-sheet-idle/",
+			"group": "build",
+			"problemMatcher": [],
+			"label": "npm: build",
+			"detail": "ng build"
 		}
 	]
 }

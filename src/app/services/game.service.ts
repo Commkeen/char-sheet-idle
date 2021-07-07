@@ -213,7 +213,7 @@ export class GameService {
   }
 
   getLevelCost(level: number): number {
-    return 150 + (((level*level)-2)*135);
+    return 150 + (((level*level)-4)*135);
   }
 
   rest(): void {

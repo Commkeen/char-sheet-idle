@@ -1,0 +1,18 @@
+<div fxLayout="row" *ngIf="getCharacter() != null" class="game-section">
+  <div fxFlex="30" class="status-section status-level">
+    Level {{level}}
+    <progress-bar [value]="xp" [max]="xpMax"></progress-bar>
+  </div>
+  <div fxFlex="30" class="status-section status-stamina">
+    Stamina: {{stamina | displayNumber}}/{{maxStamina | displayNumber}}
+    <progress-bar [value]="stamina" [max]="maxStamina"></progress-bar>
+  </div>
+  <div fxFlex="30" class="status-section status-venture">
+    {{ventureName}}
+    <progress-bar [value]="ventureProgress" [max]="ventureProgressMax"></progress-bar>
+  </div>
+  <div fxFlex="10" class="status-section status-other">
+    <div>AP: {{ap}}</div>
+    <div>Gold: 100</div>
+  </div>
+</div>
