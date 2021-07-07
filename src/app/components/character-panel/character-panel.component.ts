@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Stat } from 'src/app/common/gameConstants';
 import { Character } from 'src/app/models/character';
 import { GameService } from 'src/app/services/game.service';
 import { DieDef } from 'src/app/staticData/dieDefinitions';
@@ -34,6 +35,18 @@ export class CharacterPanelComponent implements OnInit {
     return result;
   }
 
+  getNextStatUnlockName() {
+    const nextUnlock = this._gameService.getNextStatUnlock();
+    if (nextUnlock == null) {return null;}
+    return nextUnlock.stat;
+  }
+
+  getNextStatUnlockCost() {
+    const nextUnlock = this._gameService.getNextStatUnlock();
+    if (nextUnlock == null) {return null;}
+    return nextUnlock.cost;
+  }
+
   // ======Display Getters======
 
   get name() {
@@ -60,8 +73,12 @@ export class CharacterPanelComponent implements OnInit {
     return this.getCharacter().maxStamina;
   }
 
-  get body() {
-    return this.getCharacter().body;
+  get stats() {
+    return this.getCharacter().stats;
+  }
+
+  getStat(stat: Stat) {
+    return this.getCharacter().stat(stat);
   }
 
   get ap() {
@@ -84,6 +101,10 @@ export class CharacterPanelComponent implements OnInit {
 
   upgradeDie(): void {
     this._gameService.upgradeDie();
+  }
+
+  unlockStat(): void {
+    this._gameService.unlockStat();
   }
 
   rest(): void {

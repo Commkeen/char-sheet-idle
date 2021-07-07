@@ -15,6 +15,7 @@ export class EncounterDef {
   progressDegenPct: number = 7;
   staminaDrain: number = 1;
   xpReward: number = 100;
+  itemReward: string = null;
   skills: EncounterSkillDef[] = [];
 
 
@@ -36,6 +37,11 @@ export class EncounterDef {
 
   xp(num: number) {
     this.xpReward = num;
+    return this;
+  }
+
+  item(item: string) {
+    this.itemReward = item;
     return this;
   }
 
@@ -74,9 +80,12 @@ export class CombatEncounterDef extends EncounterDef {
 }
 
 export const ENCOUNTER_LIBRARY: EncounterDef[] = [
-  new CombatEncounterDef("rat"),
-  new CombatEncounterDef("slime mold").resist("ranged"),
-  new CombatEncounterDef("brutal rat").setDifficulty(1.5),
+  new CombatEncounterDef("rat")
+    .xp(10).item("shortbow"),
+  new CombatEncounterDef("slime mold").resist("ranged")
+    .xp(5),
+  new CombatEncounterDef("brutal rat").setDifficulty(1.5)
+    .xp(15).item("knife"),
   new CombatEncounterDef("wolf").setDifficulty(1.8),
   new CombatEncounterDef("felsprite").setDifficulty(1.4)
     .resist("melee").resist("ranged"),
@@ -94,5 +103,6 @@ export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("corpse wight").setDifficulty(2.9)
     .resist("melee").resist("ranged"),
   new CombatEncounterDef("tomb lord").setDifficulty(3.5)
+    .item("staff of ancients")
 
 ];

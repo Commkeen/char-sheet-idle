@@ -9,6 +9,7 @@ import { MessagePanelComponent } from './components/message-panel/message-panel.
 import { GameButtonComponent } from './components/common/game-button/game-button.component';
 import { ProgressBarComponent } from './components/common/progress-bar/progress-bar.component';
 import { DisplayNumberPipe } from './pipes/display-number.pipe';
+import { SkillPanelComponent } from './components/skill-panel/skill-panel.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DisplayNumberPipe } from './pipes/display-number.pipe';
     MessagePanelComponent,
     GameButtonComponent,
     ProgressBarComponent,
-    DisplayNumberPipe
+    DisplayNumberPipe,
+    SkillPanelComponent
   ],
   imports: [
     BrowserModule,
