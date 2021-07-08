@@ -11,7 +11,7 @@ export class MessagePanelComponent implements OnInit {
   constructor(private _messageService: MessageService) { }
 
   public messageBuffer: string[] = [];
-  public messageBufferSize: number = 10;
+  public messageBufferSize: number = 8;
 
   ngOnInit(): void {
     this._messageService.msgFeed.subscribe(x => this.onMessage(x));

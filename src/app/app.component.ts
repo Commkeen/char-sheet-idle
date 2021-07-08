@@ -9,9 +9,23 @@ import { TimeService } from './services/time.service';
 export class AppComponent implements OnInit {
   title = 'char-sheet-idle';
 
+  showLocation = true;
+  showCharacterSheet = false;
+
   constructor(private _timeService: TimeService) { }
 
   ngOnInit(): void {
     this._timeService.startGame();
+  }
+
+  // ======Nav handlers======
+  onSelectCharSheet() {
+    this.showCharacterSheet = true;
+    this.showLocation = false;
+  }
+
+  onSelectRegion() {
+    this.showLocation = true;
+    this.showCharacterSheet = false;
   }
 }

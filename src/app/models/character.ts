@@ -14,6 +14,8 @@ export class Character {
 
   skills: Skill[] = [];
 
+  perks: Perk[] = [];
+
   stat(stat: Stat) {
     if (!this.stats.has(stat)) {return 0;}
     return this.stats.get(stat);
@@ -34,6 +36,14 @@ export class Character {
   hasSkill(skill: string) {
     return this.skills.some(x => x.name == skill);
   }
+
+  addPerk(name: string) {
+    this.perks.push(new Perk(name));
+  }
+
+  hasPerk(name: string) {
+    return this.perks.some(x => x.name == name);
+  }
 }
 
 export class Skill {
@@ -50,5 +60,13 @@ export class Skill {
 
   total(): number {
     return this.rank + this.itemBonus;
+  }
+}
+
+export class Perk {
+  name: string;
+
+  constructor(name: string) {
+    this.name = name;
   }
 }

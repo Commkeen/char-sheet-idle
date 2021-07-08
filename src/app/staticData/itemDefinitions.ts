@@ -29,6 +29,10 @@ export class ItemDef {
   }
 }
 
+export function getItemDef(name: string): ItemDef {
+  return ITEM_LIBRARY.find(x => x.name == name);
+}
+
 export const ITEM_LIBRARY: ItemDef[] = [
   new ItemDef("knife").setSkill("melee", 2)
     .setReq("body", 2),

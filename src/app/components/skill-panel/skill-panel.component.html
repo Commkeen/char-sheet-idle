@@ -1,7 +1,37 @@
 <div class="game-section" *ngIf="getSkills() != null">
   <br />
   <div class="combat-skills">
-    <div class="skill" fxLayout="row" *ngFor="let skill of getSkills()">
+    <div class="skill" fxLayout="row" *ngFor="let skill of getCombatSkills()">
+      <div fxFlex="10" class="skill-total">
+        {{skill.total()}}
+      </div>
+      <div fxFlex="90" fxLayout="column">
+        <div fxFlex="90" fxLayout="row" class="skill-text">
+          <div fxFlex="90">{{skill.name}}</div>
+          <div fxFlex="10">{{skill.rank}}</div>
+        </div>
+        <progress-bar fxFlex="10" [value]="skill.progress" [max]="progressMax(skill)"></progress-bar>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="defense-skills">
+    <div class="skill" fxLayout="row" *ngFor="let skill of getDefenseSkills()">
+      <div fxFlex="10" class="skill-total">
+        {{skill.total()}}
+      </div>
+      <div fxFlex="90" fxLayout="column">
+        <div fxFlex="90" fxLayout="row" class="skill-text">
+          <div fxFlex="90">{{skill.name}}</div>
+          <div fxFlex="10">{{skill.rank}}</div>
+        </div>
+        <progress-bar fxFlex="10" [value]="skill.progress" [max]="progressMax(skill)"></progress-bar>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="other-skills">
+    <div class="skill" fxLayout="row" *ngFor="let skill of getOtherSkills()">
       <div fxFlex="10" class="skill-total">
         {{skill.total()}}
       </div>

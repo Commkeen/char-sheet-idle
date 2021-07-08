@@ -11,6 +11,8 @@ import { ProgressBarComponent } from './components/common/progress-bar/progress-
 import { DisplayNumberPipe } from './pipes/display-number.pipe';
 import { SkillPanelComponent } from './components/skill-panel/skill-panel.component';
 import { StatusPanelComponent } from './components/status-panel/status-panel.component';
+import { NavPanelComponent } from './components/nav-panel/nav-panel.component';
+import { CharacterSheetPanelComponent } from './components/character-sheet-panel/character-sheet-panel.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { StatusPanelComponent } from './components/status-panel/status-panel.com
     ProgressBarComponent,
     DisplayNumberPipe,
     SkillPanelComponent,
-    StatusPanelComponent
+    StatusPanelComponent,
+    NavPanelComponent,
+    CharacterSheetPanelComponent
   ],
   imports: [
     BrowserModule,

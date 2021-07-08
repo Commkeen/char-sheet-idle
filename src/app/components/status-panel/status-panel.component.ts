@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character';
 import { Venture } from 'src/app/models/venture';
+import { CharacterService } from 'src/app/services/character.service';
 import { GameService } from 'src/app/services/game.service';
 
 @Component({
@@ -10,13 +11,13 @@ import { GameService } from 'src/app/services/game.service';
 })
 export class StatusPanelComponent implements OnInit {
 
-  constructor(private _gameService: GameService) { }
+  constructor(private _gameService: GameService, private _characterService: CharacterService) { }
 
   ngOnInit(): void {
   }
 
   getCharacter(): Character {
-    return this._gameService.character;
+    return this._characterService.character;
   }
 
   getTargetVenture(): Venture {
@@ -36,7 +37,7 @@ export class StatusPanelComponent implements OnInit {
   }
 
   get xpMax() {
-    return this._gameService.getLevelCost(this.level+1);
+    return this._characterService.getLevelCost(this.level+1);
   }
 
   get stamina() {
