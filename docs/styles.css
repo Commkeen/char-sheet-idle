@@ -5,3 +5,8 @@ html, body {
   font-family: "PT Sans", sans-serif;
   background-color: #f2eff3;
 }
+
+.game-section {
+  height: 100%;
+  overflow: hidden;
+}
