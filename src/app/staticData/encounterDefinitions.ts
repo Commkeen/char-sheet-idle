@@ -11,33 +11,22 @@ export class EncounterSkillDef {
 
 export class EncounterDef {
   name: string;
-  progressNeeded: number = 1; // Multiplied by 100
+  level: number;
   progressDegenPct: number = 7;
   staminaDrain: number = 1;
-  xpReward: number = 100;
   itemReward: string = null;
   skills: EncounterSkillDef[] = [];
 
 
-  constructor(name: string) {
+  constructor(name: string, level: number) {
     this.name = name;
+    this.level = level;
   }
 
   getSkill(skill: string) {
     const s = this.skills.find(x => x.skill == skill);
     if (s == null) {return 0;}
     return s.strength;
-  }
-
-  setDifficulty(num: number) {
-    this.progressNeeded = num;
-    this.staminaDrain = num;
-    return this;
-  }
-
-  xp(num: number) {
-    this.xpReward = num;
-    return this;
   }
 
   item(item: string) {
@@ -57,8 +46,8 @@ export class EncounterDef {
 }
 
 export class CombatEncounterDef extends EncounterDef {
-  constructor(name: string) {
-    super(name);
+  constructor(name: string, level: number) {
+    super(name, level);
     this.initCombatSkills();
   }
 
@@ -80,29 +69,28 @@ export class CombatEncounterDef extends EncounterDef {
 }
 
 export const ENCOUNTER_LIBRARY: EncounterDef[] = [
-  new CombatEncounterDef("rat")
-    .xp(10).item("shortbow"),
-  new CombatEncounterDef("slime mold").resist("ranged")
-    .xp(5),
-  new CombatEncounterDef("brutal rat").setDifficulty(1.5)
-    .xp(15).item("knife"),
-  new CombatEncounterDef("wolf").setDifficulty(1.8),
-  new CombatEncounterDef("felsprite").setDifficulty(1.4)
+  new CombatEncounterDef("rat", 1)
+    .item("shortbow"),
+  new CombatEncounterDef("slime mold", 1).resist("ranged"),
+  new CombatEncounterDef("brutal rat", 2)
+    .item("knife"),
+  new CombatEncounterDef("wolf", 3),
+  new CombatEncounterDef("felsprite", 2)
     .resist("melee").resist("ranged"),
-  new CombatEncounterDef("dire rat").setDifficulty(1.7),
-  new CombatEncounterDef("goblin scout").setDifficulty(1.75),
-  new CombatEncounterDef("goblin guard").setDifficulty(2.2),
-  new CombatEncounterDef("goblin sage").setDifficulty(2.1)
+  new CombatEncounterDef("dire rat", 3),
+  new CombatEncounterDef("goblin scout", 5),
+  new CombatEncounterDef("goblin guard", 7),
+  new CombatEncounterDef("goblin sage", 8)
     .resist("magic"),
-  new CombatEncounterDef("hobgoblin overseer").setDifficulty(2.7)
+  new CombatEncounterDef("hobgoblin overseer", 10)
     .resist("ranged"),
-  new CombatEncounterDef("goblin shaman").setDifficulty(2.5)
+  new CombatEncounterDef("goblin shaman", 9)
     .resist("magic"),
-  new CombatEncounterDef("hobgoblin graverobber").setDifficulty(3)
+  new CombatEncounterDef("hobgoblin graverobber", 15)
     .resist("ranged"),
-  new CombatEncounterDef("corpse wight").setDifficulty(2.9)
+  new CombatEncounterDef("corpse wight", 18)
     .resist("melee").resist("ranged"),
-  new CombatEncounterDef("tomb lord").setDifficulty(3.5)
+  new CombatEncounterDef("tomb lord", 20)
     .item("staff of ancients")
 
 ];

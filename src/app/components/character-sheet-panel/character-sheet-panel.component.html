@@ -1,0 +1,24 @@
+<div fxLayout="row" *ngIf="getCharacter() != null" class="game-section">
+  <div fxLayout="column" fxFlex="50" class="character-sheet-left">
+    <h2>Bob the Adventurer</h2>
+    <div class="stat-list">
+      <div class="stat" *ngFor="let stat of stats | keyvalue">
+        {{stat.key}}: {{stat.value}}
+      </div>
+    </div>
+  </div>
+  <div fxLayout="column" fxFlex="50" class="character-sheet-right">
+    <h3>Active Perks</h3>
+    <div class="active-perk-list">
+      <div class="active-perk" *ngFor="let perk of activePerks">
+        {{perk.name}}
+      </div>
+    </div>
+    <h3>Perk Points: 3</h3>
+    <div fxLayout="row wrap" class="available-perk-list">
+      <div fxFlex="none" class="available-perk" *ngFor="let perk of availablePerks">
+        <game-button (click)="selectPerk(perk)">{{perk.name}} ({{perkCost(perk)}} AP)</game-button>
+      </div>
+    </div>
+  </div>
+</div>

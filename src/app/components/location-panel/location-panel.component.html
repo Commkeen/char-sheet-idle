@@ -1,4 +1,18 @@
-<div class="game-section">
+<div *ngIf="getCharacter() != null" class="game-section">
+  <div fxLayout="row" class="region-status">
+    <div fxFlex="34" fxLayout="column" class="region-status-item">
+      <div>Scouting</div>
+      <progress-bar></progress-bar>
+    </div>
+    <div fxFlex="33" fxLayout="column" class="region-status-item">
+      <div>Renown</div>
+      <progress-bar></progress-bar>
+    </div>
+    <div fxFlex="33" fxLayout="column" class="region-status-item">
+      <div>Infamy</div>
+      <progress-bar></progress-bar>
+    </div>
+  </div>
   <div class="local-ventures">
     <div class="venture" fxLayout="row" *ngFor="let venture of getVentures()">
       <div fxFlex="30"></div>

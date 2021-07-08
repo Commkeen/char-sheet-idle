@@ -1,16 +1,23 @@
 <div fxLayout="column" class="layout-container">
-  <div fxFlex="4" class="layout-top">
+  <div fxFlex="none" class="layout-header">
     Character Sheet Idle 0.1 --- Work in progress
   </div>
-  <div fxFlex="70" class="layout-center">
-    <div fxFlex="80" class="layout-center-left">
-      <app-location-panel></app-location-panel>
+  <div fxFlex="none" class="layout-top">
+    <app-status-panel></app-status-panel>
+  </div>
+  <div fxFlex="80" class="layout-center">
+    <div fxFlex="none" class="layout-center-left">
+      <app-nav-panel (selectCharSheet)="onSelectCharSheet()" (selectRegion)="onSelectRegion()"></app-nav-panel>
+    </div>
+    <div fxFlex="80" class="layout-center-center">
+      <app-location-panel *ngIf="showLocation"></app-location-panel>
+      <app-character-sheet-panel *ngIf="showCharacterSheet"></app-character-sheet-panel>
     </div>
     <div fxFlex="20" class="layout-center-right">
       <app-skill-panel></app-skill-panel>
     </div>
   </div>
-  <div fxFlex="26" fxLayout="row" class="layout-bottom">
+  <div fxFlex="20" fxLayout="row" class="layout-bottom">
     <div fxFlex="60" class="layout-left-bottom">
       <app-character-panel></app-character-panel>
     </div>

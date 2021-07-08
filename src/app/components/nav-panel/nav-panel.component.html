@@ -1,0 +1,10 @@
+<div class="game-section">
+  <div class="nav-top">
+    <game-button (click)="onSelectCharSheet()">Character Sheet</game-button>
+  </div>
+  <div class="nav-regions">
+    <div class="region" *ngFor="let region of regions">
+      <game-button (click)="onSelectRegion(region)">{{region}}</game-button>
+    </div>
+  </div>
+</div>
