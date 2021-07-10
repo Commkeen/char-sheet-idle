@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Stat } from '../common/gameConstants';
 import { Character, Perk, Skill } from '../models/character';
 import { EncounterDef } from '../staticData/encounterDefinitions';
 import { getItemDef } from '../staticData/itemDefinitions';
@@ -15,6 +16,10 @@ export class CharacterService {
   private _gameService: GameService;
 
   public character: Character = null;
+
+  public startingPerkAvailable: boolean = false;
+  public statPointsToSpend: number = 0;
+  public perkPointsToSpend: number = 0;
   public availablePerks: Perk[] = [];
 
   public items: string[] = [];
@@ -25,15 +30,18 @@ export class CharacterService {
     this._gameService = svc;
   }
 
-  rollNewCharacter(): void {
+  initNewCharacter(): void {
     const die = this._gameService.getCurrentDie();
     this.character = new Character();
     this.character.name = "Bob the Adventurer";
     this.character.xp = 0;
     this.character.level = 1;
+    this.character.creationComplete = false;
 
-    this._gameService.unlockedStats.forEach(x => {
-      this.character.setStat(x, die.roll());
+    this.statPointsToSpend = this._gameService.progress.statPoints;
+
+    this._gameService.progress.unlockedStats.forEach(x => {
+      this.character.setStat(x, 0);
     });
 
     this.initSkills();
@@ -47,13 +55,32 @@ export class CharacterService {
     this._gameService.targetVenture = null;
     this._gameService.resting = false;
 
-    this._messageService.addMessage("Welcome, " + this.character.name + "!");
-
     this._gameService.initVentures();
     this._gameService.initSim();
 
     this.updateSkills();
     this.updateAvailablePerks();
+  }
+
+  rollStat(stat: Stat): void {
+    const die = this._gameService.getCurrentDie();
+    this.character.setStat(stat, die.roll());
+    this.checkCharCreationComplete();
+  }
+
+  spendStatPoint(stat: Stat): void {
+    if (this.statPointsToSpend <= 0) {return;}
+    this.character.setStat(stat, this.character.stat(stat)+1);
+    this.statPointsToSpend--;
+    this.checkCharCreationComplete();
+  }
+
+  checkCharCreationComplete(): void {
+    if (this.character.hasUnrolledStats()) {return;}
+    if (this.statPointsToSpend > 0) {return;}
+    if (this.startingPerkAvailable) {return;}
+    this.character.creationComplete = true;
+    this._messageService.addMessage("Welcome, " + this.character.name + "!");
   }
 
   // ======Level======
@@ -85,10 +112,6 @@ export class CharacterService {
 
     this.character.maxStamina = (this.character.stat("body")+2)*3;
     this.character.stamina = this.character.maxStamina;
-
-    const newAp = Math.max(0, newLevel*newLevel - 3);
-    this._gameService.ap += newAp;
-    this._messageService.addMessage("You have gained " + newAp + " AP.");
 
     this.updateSkills();
   }

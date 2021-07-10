@@ -21,31 +21,8 @@ export class CharacterPanelComponent implements OnInit {
     return this._characterService.character;
   }
 
-  getAP(): number {
-    return this._gameService.ap;
-  }
-
-  getDie(): DieDef {
-    return this._gameService.getCurrentDie();
-  }
-
-  getNextDieCost(): number {
-    let result = null;
-    const nextDie = this._gameService.getNextDie();
-    if (nextDie != null) {result = nextDie.cost;}
-    return result;
-  }
-
-  getNextStatUnlockName() {
-    const nextUnlock = this._gameService.getNextStatUnlock();
-    if (nextUnlock == null) {return null;}
-    return nextUnlock.stat;
-  }
-
-  getNextStatUnlockCost() {
-    const nextUnlock = this._gameService.getNextStatUnlock();
-    if (nextUnlock == null) {return null;}
-    return nextUnlock.cost;
+  getInventory(): string[] {
+    return this._characterService.items;
   }
 
   // ======Display Getters======
@@ -82,34 +59,6 @@ export class CharacterPanelComponent implements OnInit {
     return this.getCharacter().stat(stat);
   }
 
-  get ap() {
-    return this._gameService.ap;
-  }
-
-  get dieCount() {
-    return this.getDie().count;
-  }
-
-  get dieFaces() {
-    return this.getDie().faces;
-  }
-
   // ======Click Handlers======
-
-  rollNewCharacter(): void {
-    this._characterService.rollNewCharacter();
-  }
-
-  upgradeDie(): void {
-    this._gameService.upgradeDie();
-  }
-
-  unlockStat(): void {
-    this._gameService.unlockStat();
-  }
-
-  rest(): void {
-    this._gameService.rest();
-  }
 
 }

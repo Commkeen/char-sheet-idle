@@ -9,8 +9,8 @@ import { TimeService } from './services/time.service';
 export class AppComponent implements OnInit {
   title = 'char-sheet-idle';
 
-  showLocation = true;
-  showCharacterSheet = false;
+  showLocation = false;
+  showCharacterSheet = true;
 
   constructor(private _timeService: TimeService) { }
 

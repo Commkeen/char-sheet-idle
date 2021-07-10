@@ -4,11 +4,13 @@ import { Stat } from "../common/gameConstants";
 export class Character {
   name: string;
 
-  stamina: number;
-  maxStamina: number;
+  creationComplete: boolean = false;
 
-  level: number;
-  xp: number;
+  stamina: number = 0;
+  maxStamina: number = 0;
+
+  level: number = 1;
+  xp: number = 0;
 
   stats: Map<Stat, number> = new Map<Stat, number>();
 
@@ -21,12 +23,26 @@ export class Character {
     return this.stats.get(stat);
   }
 
+  hasStat(stat: Stat) {
+    return this.stats.has(stat);
+  }
+
   setStat(stat: Stat, value: number) {
     this.stats.set(stat, value);
   }
 
   getStats() {
-    return this.stats.keys();
+    return Array.from(this.stats.keys());
+  }
+
+  statNotRolled(stat: Stat): boolean {
+    return this.stat(stat) == 0;
+  }
+
+  hasUnrolledStats(): boolean {
+    let hasUnrolledStat = false;
+    this.stats.forEach(x => {if (x == 0){hasUnrolledStat = true;}});
+    return hasUnrolledStat;
   }
 
   skill(skill: string) {

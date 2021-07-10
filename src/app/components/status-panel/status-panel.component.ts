@@ -48,10 +48,6 @@ export class StatusPanelComponent implements OnInit {
     return this.getCharacter().maxStamina;
   }
 
-  get ap() {
-    return this._gameService.ap;
-  }
-
   get ventureName() {
     const venture = this.getTargetVenture();
     if (venture == null) {return "";}

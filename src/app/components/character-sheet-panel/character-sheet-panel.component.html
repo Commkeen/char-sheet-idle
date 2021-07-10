@@ -1,24 +1,59 @@
-<div fxLayout="row" *ngIf="getCharacter() != null" class="game-section">
-  <div fxLayout="column" fxFlex="50" class="character-sheet-left">
-    <h2>Bob the Adventurer</h2>
-    <div class="stat-list">
-      <div class="stat" *ngFor="let stat of stats | keyvalue">
-        {{stat.key}}: {{stat.value}}
+<div fxLayout="column" class="game-section">
+  <div fxLayout="row" fxFlex="none" class="character-sheet-header">
+    <div fxFlex="33" class="character-sheet-header-section">
+      <div fxFlex="none"><game-button (click)="retire()">Retire</game-button></div>
+    </div>
+    <div fxFlex="34" class="character-sheet-header-section">
+      Net Worth: 1250 Gold
+    </div>
+    <div fxFlex="33" class="character-sheet-header-section"></div>
+  </div>
+  <div fxLayout="row" fxFlex="80" class="character-sheet-body">
+    <div fxLayout="column" fxFlex="50" class="character-sheet-left">
+      <h2>Bob the Adventurer</h2>
+      <div fxLayout="row" class="stat-gen-info">
+        <div>Current die: {{dieCount}}d{{dieFaces}}</div>
+        <div>Stat points: {{statPoints}}</div>
+      </div>
+      <div fxLayout="column" class="stat-list">
+        <div fxLayout="row" class="stat" *ngFor="let stat of stats">
+          <div fxFlex="none" class="stat-button">
+            <game-button *ngIf="statNotRolled(stat)" (click)="rollStat(stat)">Roll</game-button>
+            <game-button *ngIf="canSpendStatPoints(stat)" (click)="spendStatPoint(stat)">+</game-button>
+          </div>
+          <div fxFlex="30" class="stat-name">
+            {{stat}}:
+          </div>
+          <div fxFlex="20" class="stat-value">
+            {{statValue(stat)}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="column" fxFlex="50" class="character-sheet-right">
+      <h3>Active Perks</h3>
+      <div class="active-perk-list">
+        <div class="active-perk" *ngFor="let perk of activePerks">
+          {{ perk.name }}
+        </div>
+      </div>
+      <h3>Perk Points: 3</h3>
+      <div fxLayout="row wrap" class="available-perk-list">
+        <div
+          fxFlex="none"
+          class="available-perk"
+          *ngFor="let perk of availablePerks"
+        >
+          <game-button (click)="selectPerk(perk)"
+            >{{ perk.name }} ({{ perkCost(perk) }})</game-button
+          >
+        </div>
       </div>
     </div>
   </div>
-  <div fxLayout="column" fxFlex="50" class="character-sheet-right">
-    <h3>Active Perks</h3>
-    <div class="active-perk-list">
-      <div class="active-perk" *ngFor="let perk of activePerks">
-        {{perk.name}}
-      </div>
-    </div>
-    <h3>Perk Points: 3</h3>
-    <div fxLayout="row wrap" class="available-perk-list">
-      <div fxFlex="none" class="available-perk" *ngFor="let perk of availablePerks">
-        <game-button (click)="selectPerk(perk)">{{perk.name}} ({{perkCost(perk)}} AP)</game-button>
-      </div>
+  <div fxFlex="none" fxLayout="row wrap" class="character-sheet-footer">
+    <div *ngFor="let upgrade of availableUpgrades">
+      <game-button *ngIf="upgradeVisible(upgrade)" (click)="buyUpgrade(upgrade)">{{upgrade}}: {{upgradeCost(upgrade)}} gold</game-button>
     </div>
   </div>
 </div>

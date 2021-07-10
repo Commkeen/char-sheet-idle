@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Stat } from '../common/gameConstants';
 import { Character, Skill } from '../models/character';
+import { Progress } from '../models/progress';
 import { Venture } from '../models/venture';
 import { DieDef, DIE_LIBRARY } from '../staticData/dieDefinitions';
 import { EncounterDef, ENCOUNTER_LIBRARY } from '../staticData/encounterDefinitions';
@@ -18,9 +19,8 @@ export class GameService {
 
   public ventures: Venture[] = [];
 
-  public ap: number = 0;
-  public dieRank: number = 0;
-  public unlockedStats: Stat[] = ["body"];
+
+  public progress: Progress = new Progress();
 
   public targetVenture: string;
   public resting: boolean = false;
@@ -30,6 +30,8 @@ export class GameService {
   constructor(private _timeService: TimeService, private _messageService: MessageService,
               private _characterService: CharacterService) {
     _characterService.setGameService(this);
+
+    this._characterService.initNewCharacter();
   }
 
   initVentures(): void {
@@ -152,35 +154,27 @@ export class GameService {
   //======Die Operations======
 
   getCurrentDie(): DieDef {
-    return DIE_LIBRARY[this.dieRank];
+    return DIE_LIBRARY[this.progress.dieRank];
   }
 
   getNextDie(): DieDef {
-    if (DIE_LIBRARY.length <= this.dieRank+1) {return null;}
-    return DIE_LIBRARY[this.dieRank+1];
+    if (this.getMaxDieRank() <= this.progress.dieRank) {return null;}
+    return DIE_LIBRARY[this.progress.dieRank+1];
+  }
+
+  getMaxDieRank(): number {
+    return DIE_LIBRARY.length - 1;
   }
 
   upgradeDie(): void {
-    if (DIE_LIBRARY.length <= this.dieRank+1) {return;}
-    this.dieRank++;
+    if (this.getMaxDieRank() <= this.progress.dieRank) {return;}
+    this.progress.dieRank++;
   }
 
-  //======AP Unlocks======
+  //======Stat Unlocks======
 
-  getNextStatUnlock() {
-    if (this.unlockedStats.length == 1) {
-      return {stat: "agility", cost: 10};
-    }
-    if (this.unlockedStats.length == 2) {
-      return {stat: "mind", cost: 25};
-    }
-    return null;
-  }
-
-  unlockStat() {
-    const unlock = this.getNextStatUnlock();
-    if (unlock == null) {return;}
-    this.unlockedStats.push(unlock.stat as Stat);
+  unlockStat(stat: Stat) {
+    this.progress.unlockedStats.push(stat);
   }
 
 }
