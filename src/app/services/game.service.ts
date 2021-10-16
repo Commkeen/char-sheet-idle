@@ -39,6 +39,7 @@ export class GameService {
   }
 
   initVentures(): void {
+    this.ventures = [];
     this.locationVentures = [];
     REGION_LIBRARY.forEach(def => {
       const lv = new LocationVentures();
