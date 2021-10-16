@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from './services/game.service';
 import { TimeService } from './services/time.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
   showLocation = false;
   showCharacterSheet = true;
 
-  constructor(private _timeService: TimeService) { }
+  constructor(private _timeService: TimeService, private _gameService: GameService) { }
 
   ngOnInit(): void {
     this._timeService.startGame();
@@ -24,7 +25,8 @@ export class AppComponent implements OnInit {
     this.showLocation = false;
   }
 
-  onSelectRegion() {
+  onSelectRegion(region: string) {
+    this._gameService.setCurrentRegion(region);
     this.showLocation = true;
     this.showCharacterSheet = false;
   }

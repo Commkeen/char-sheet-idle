@@ -219,5 +219,9 @@ export class CharacterService {
     this.updateSkills();
   }
 
+  hasItem(item: string): boolean {
+    return this.items.indexOf(item) > -1;
+  }
+
 
 }

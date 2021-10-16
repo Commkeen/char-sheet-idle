@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { Stat } from '../common/gameConstants';
 import { Character, Skill } from '../models/character';
 import { Progress } from '../models/progress';
-import { Venture } from '../models/venture';
+import { Venture, LocationVentures } from '../models/venture';
+import { Criteria } from '../staticData/criteria';
 import { DieDef, DIE_LIBRARY } from '../staticData/dieDefinitions';
 import { EncounterDef, ENCOUNTER_LIBRARY } from '../staticData/encounterDefinitions';
 import { ItemDef, ITEM_LIBRARY } from '../staticData/itemDefinitions';
+import { getRegionDef, REGION_LIBRARY } from '../staticData/regionDefinitions';
 import { SkillDef, SKILL_LIBRARY } from '../staticData/skillDefinitions';
 import { VentureDef, VENTURE_LIBRARY } from '../staticData/ventureDefinitions';
 import { CharacterService } from './character.service';
@@ -17,8 +19,10 @@ import { TimeService } from './time.service';
 })
 export class GameService {
 
-  public ventures: Venture[] = [];
+  public currentRegion: string = REGION_LIBRARY[0].internalName;
 
+  public locationVentures: LocationVentures[] = []; // Ventures by location
+  public ventures: Venture[] = []; // Same ventures, in flat array
 
   public progress: Progress = new Progress();
 
@@ -35,11 +39,15 @@ export class GameService {
   }
 
   initVentures(): void {
-    this.ventures = [];
-    VENTURE_LIBRARY.forEach(def => {
-      const v = new Venture();
-      v.name = def.name;
-      this.ventures.push(v);
+    this.locationVentures = [];
+    REGION_LIBRARY.forEach(def => {
+      const lv = new LocationVentures();
+      lv.init(def.internalName);
+      this.locationVentures.push(lv);
+    });
+
+    this.locationVentures.forEach(lv => {
+      this.ventures = this.ventures.concat(lv.ventures);
     });
   }
 
@@ -91,16 +99,26 @@ export class GameService {
 
       if (character.stamina <= 0) {this.resting = true;}
 
-      if (venture.progress > venture.progressMax) {
+      if (venture.progress >= venture.progressMax) {
         venture.completions++;
         venture.progress = 0;
         this._messageService.addMessage("You slay the " + venture.encounterName + ".");
 
+        // Reward xp and items to player
         let xpReward = 65 + (Math.pow(encDef.level, 1.5)*15);
 
         this._characterService.gainXp(xpReward);
         if (encDef.itemReward != null) {
           this._characterService.gainItem(encDef.itemReward);
+        }
+
+        // Advance venture mastery rating on successful completion
+        let masteryReward = 1; //TODO
+        let masteryNeeded = this.getVentureMasteryCost(venture.name, venture.mastery + 1);
+        venture.masteryProgress += masteryReward;
+        if (venture.masteryProgress >= masteryNeeded) {
+          venture.mastery++;
+          venture.masteryProgress -= masteryNeeded;
         }
 
         this.startEncounter(venture);
@@ -129,6 +147,18 @@ export class GameService {
     this.resting = true;
   }
 
+  // ======Region Operations======
+
+  getCurrentRegion(): string {
+    return this.currentRegion;
+  }
+
+  setCurrentRegion(name: string) {
+    const region = getRegionDef(name);
+    // TODO: Verify region was found?
+    this.currentRegion = region.internalName;
+  }
+
   //======Venture Operations======
 
   getVentureDef(name: string): VentureDef {
@@ -137,6 +167,26 @@ export class GameService {
 
   getEncounterDef(name: string): EncounterDef {
     return ENCOUNTER_LIBRARY.find(x => x.name == name);
+  }
+
+  getAllVentures(): Venture[] {
+    return this.ventures;
+  }
+
+  getVenturesForLocation(name: string): Venture[] {
+    return this.locationVentures.find(x => x.name == name).ventures;
+  }
+
+  getVenturesForCurrentLocation(): Venture[] {
+    return this.getVenturesForLocation(this.currentRegion);
+  }
+
+  getVentureMastery(name: string): number {
+    return this.ventures.find(x => x.name == name).mastery;
+  }
+
+  getVentureMasteryCost(name: string, level: number): number {
+    return 5; //TODO
   }
 
   selectVenture(venture: Venture): void {
@@ -175,6 +225,86 @@ export class GameService {
 
   unlockStat(stat: Stat) {
     this.progress.unlockedStats.push(stat);
+  }
+
+  //======Criteria Operations======
+
+  allCriteriaMet(criteriaList: Criteria[]): boolean {
+    return criteriaList.every(x => this.criteriaMet(x));
+  }
+
+  criteriaMet(criteria: Criteria): boolean {
+    switch (criteria.criteriaType) {
+      case "upgrade":
+        return this.upgradeCriteriaMet(criteria);
+      case "skill":
+        return this.skillCriteriaMet(criteria);
+      case "item":
+        return this.itemCriteriaMet(criteria);
+      case "stat":
+        return this.statCriteriaMet(criteria);
+      case "perk":
+        return this.perkCriteriaMet(criteria);
+      case "level":
+        return this.levelCriteriaMet(criteria);
+      case "ventureMastery":
+        return this.ventureMasteryCriteriaMet(criteria);
+      case "scouting":
+        return this.scoutingCriteriaMet(criteria);
+      case "renown":
+        return this.renownCriteriaMet(criteria);
+      case "infamy":
+        return this.infamyCriteriaMet(criteria);
+      default:
+        this._messageService.addMessage("error: no handler for criteriatype " + criteria.criteriaType);
+    }
+    return true;
+  }
+
+  upgradeCriteriaMet(criteria: Criteria): boolean {
+    const result = this.progress.upgrades.getRank(criteria.target) >= criteria.value;
+    if (criteria.lessThan) return !result;
+    return result;
+  }
+
+  skillCriteriaMet(criteria: Criteria): boolean {
+    const skill = this._characterService.character.skill(criteria.target);
+    if (skill == null && !criteria.lessThan) {return false;}
+    const result = skill.rank >= criteria.value;
+    if (criteria.lessThan) return !result;
+    return result;
+  }
+
+  itemCriteriaMet(criteria: Criteria): boolean {
+    return this._characterService.hasItem(criteria.target);
+  }
+
+  statCriteriaMet(criteria: Criteria): boolean {
+    return this._characterService.character.stat(criteria.target as Stat) >= criteria.value;
+  }
+
+  perkCriteriaMet(criteria: Criteria): boolean {
+    return this._characterService.character.hasPerk(criteria.target);
+  }
+
+  levelCriteriaMet(criteria: Criteria): boolean {
+    return this._characterService.character.level >= criteria.value;
+  }
+
+  ventureMasteryCriteriaMet(criteria: Criteria): boolean {
+    return this.getVentureMastery(criteria.target) >= criteria.value;
+  }
+
+  scoutingCriteriaMet(criteria: Criteria): boolean {
+    return true;
+  }
+
+  renownCriteriaMet(criteria: Criteria): boolean {
+    return true;
+  }
+
+  infamyCriteriaMet(criteria: Criteria): boolean {
+    return true;
   }
 
 }

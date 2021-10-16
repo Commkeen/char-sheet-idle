@@ -18,11 +18,12 @@
       <div fxFlex="30"></div>
       <div fxFlex="30" fxLayout="row" class="venture-left">
         <game-button fxFlex="60" (click)="selectVenture(venture)">{{venture.name}}</game-button>
-        <div fxFlex="40">{{venture.completions}}</div>
+        <div fxFlex="40">{{venture.mastery}}</div>
       </div>
       <div fxFlex="70" class="venture-right" fxLayout="column">
         <div>{{venture.encounterName}}</div>
         <progress-bar [value]="venture.progress" [max]="venture.progressMax"></progress-bar>
+        <progress-bar [value]="venture.masteryProgress" [max]="5"></progress-bar>
       </div>
     </div>
   </div>

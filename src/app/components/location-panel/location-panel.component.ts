@@ -13,8 +13,6 @@ export class LocationPanelComponent implements OnInit {
 
   constructor(private _gameService: GameService, private _characterService: CharacterService) { }
 
-  public localVentures: Venture[] = [];
-
   ngOnInit(): void {
   }
 
@@ -23,7 +21,7 @@ export class LocationPanelComponent implements OnInit {
   }
 
   getVentures(): Venture[] {
-    return this._gameService.ventures;
+    return this._gameService.getVenturesForCurrentLocation();
   }
 
   // ======Display Getters======

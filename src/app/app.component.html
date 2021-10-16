@@ -7,7 +7,7 @@
   </div>
   <div fxFlex="80" class="layout-center">
     <div fxFlex="none" class="layout-center-left">
-      <app-nav-panel (selectCharSheet)="onSelectCharSheet()" (selectRegion)="onSelectRegion()"></app-nav-panel>
+      <app-nav-panel (selectCharSheet)="onSelectCharSheet()" (selectRegion)="onSelectRegion($event)"></app-nav-panel>
     </div>
     <div fxFlex="80" class="layout-center-center">
       <app-location-panel *ngIf="showLocation"></app-location-panel>
