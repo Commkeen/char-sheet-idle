@@ -103,7 +103,9 @@ export class GameService {
       if (venture.progress >= venture.progressMax) {
         venture.completions++;
         venture.progress = 0;
-        this._messageService.addMessage("You slay the " + venture.encounterName + ".");
+        if (encDef.encounterType == "combat") {
+          this._messageService.addMessage("You slay the " + venture.encounterName + ".");
+        }
 
         // Reward xp and items to player
         let xpReward = 65 + (Math.pow(encDef.level, 1.5)*15);
@@ -135,7 +137,9 @@ export class GameService {
         x.progress -= progDegen*dT;
         if (x.progress <= 0) {
           x.progress = 0;
-          this._messageService.addMessage(`The ${x.encounterName} wandered off while you were asleep.`);
+          if (encDef.encounterType == "combat") {
+            this._messageService.addMessage(`The ${x.encounterName} wandered off while you were asleep.`);
+          }
           x.encounterName = null;
         }
       }

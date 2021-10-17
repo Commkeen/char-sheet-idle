@@ -1,4 +1,6 @@
 
+export type EncounterType = "general" | "combat"
+
 export class EncounterSkillDef {
   skill: string;
   strength: number;
@@ -12,6 +14,8 @@ export class EncounterSkillDef {
 export class EncounterDef {
   name: string;
   level: number;
+  encounterType: EncounterType = "general";
+  activeDesc: string;
   progressDegenPct: number = 7;
   staminaDrain: number = 1;
   itemReward: string = null;
@@ -20,6 +24,7 @@ export class EncounterDef {
 
   constructor(name: string, level: number) {
     this.name = name;
+    this.activeDesc = name;
     this.level = level;
   }
 
@@ -27,6 +32,11 @@ export class EncounterDef {
     const s = this.skills.find(x => x.skill == skill);
     if (s == null) {return 0;}
     return s.strength;
+  }
+
+  setActiveDesc(desc: string) {
+    this.activeDesc = desc;
+    return this;
   }
 
   item(item: string) {
@@ -48,6 +58,7 @@ export class EncounterDef {
 export class CombatEncounterDef extends EncounterDef {
   constructor(name: string, level: number) {
     super(name, level);
+    this.encounterType = "combat";
     this.initCombatSkills();
   }
 
@@ -66,6 +77,10 @@ export class CombatEncounterDef extends EncounterDef {
     this.addSkill(skill, 2);
     return this;
   }
+}
+
+export function getEncounterDef(name: string) {
+  return ENCOUNTER_LIBRARY.find(x => x.name == name);
 }
 
 export const ENCOUNTER_LIBRARY: EncounterDef[] = [
@@ -91,6 +106,9 @@ export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("corpse wight", 18)
     .resist("melee").resist("ranged"),
   new CombatEncounterDef("tomb lord", 20)
-    .item("staff of ancients")
+    .item("staff of ancients"),
 
+  new EncounterDef("darkWards", 1)
+    .setActiveDesc("dispelling warding glyphs")
+    .addSkill("magic", 1)
 ];

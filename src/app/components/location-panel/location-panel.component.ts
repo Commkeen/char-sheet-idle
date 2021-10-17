@@ -3,6 +3,7 @@ import { Character } from 'src/app/models/character';
 import { Venture } from 'src/app/models/venture';
 import { CharacterService } from 'src/app/services/character.service';
 import { GameService } from 'src/app/services/game.service';
+import { getEncounterDef } from 'src/app/staticData/encounterDefinitions';
 
 @Component({
   selector: 'app-location-panel',
@@ -25,6 +26,12 @@ export class LocationPanelComponent implements OnInit {
   }
 
   // ======Display Getters======
+
+  getEncounterDesc(encounterName: string) {
+    const encounter = getEncounterDef(encounterName);
+    if (encounter == null) {return '';}
+    return encounter.activeDesc;
+  }
 
   // ======Click Handlers======
   selectVenture(v: Venture): void {

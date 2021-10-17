@@ -76,5 +76,7 @@ export const VENTURE_LIBRARY: VentureDef[] = [
     .addEncounter("goblin sage"),
 
   new VentureDef("Dark Lord's Gate", "dark")
-    .addEncounter("goblin guard")
+    .addEncounter("goblin guard"),
+  new VentureDef("Warding Sigils", "dark")
+    .addEncounter("darkWards")
 ];

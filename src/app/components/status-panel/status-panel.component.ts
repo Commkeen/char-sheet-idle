@@ -3,6 +3,7 @@ import { Character } from 'src/app/models/character';
 import { Venture } from 'src/app/models/venture';
 import { CharacterService } from 'src/app/services/character.service';
 import { GameService } from 'src/app/services/game.service';
+import { getEncounterDef } from 'src/app/staticData/encounterDefinitions';
 
 @Component({
   selector: 'app-status-panel',
@@ -53,7 +54,8 @@ export class StatusPanelComponent implements OnInit {
     if (venture == null) {return "";}
     let result = venture.name;
     if (venture.encounterName != null) {
-      result += ` - ${venture.encounterName}`;
+      const encounter = getEncounterDef(venture.encounterName);
+      result += ` - ${encounter.activeDesc}`;
     }
     return result;
   }
