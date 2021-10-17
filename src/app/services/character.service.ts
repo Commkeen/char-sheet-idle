@@ -55,6 +55,7 @@ export class CharacterService {
     this._gameService.targetVenture = null;
     this._gameService.resting = false;
 
+    this._gameService.initRegions();
     this._gameService.initVentures();
     this._gameService.initSim();
 

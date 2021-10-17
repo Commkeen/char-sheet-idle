@@ -1,16 +1,11 @@
 <div class="game-section">
   <div fxLayout="row" class="region-status">
-    <div fxFlex="34" fxLayout="column" class="region-status-item">
-      <div>Scouting</div>
-      <progress-bar></progress-bar>
-    </div>
-    <div fxFlex="33" fxLayout="column" class="region-status-item">
-      <div>Renown</div>
-      <progress-bar></progress-bar>
-    </div>
-    <div fxFlex="33" fxLayout="column" class="region-status-item">
-      <div>Infamy</div>
-      <progress-bar></progress-bar>
+    <div fxFlex="33" fxLayout="column" class="region-status-item" *ngFor="let rating of getRatings()">
+      <div fxFlex="90" fxLayout="row" class="rating-text">
+        <div fxFlex="90">{{rating.name}}</div>
+        <div fxFlex="10">{{rating.rank}}</div>
+      </div>
+      <progress-bar [value]="rating.progress" [max]="rating.progressMax"></progress-bar>
     </div>
   </div>
   <div class="local-ventures">

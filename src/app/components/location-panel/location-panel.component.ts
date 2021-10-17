@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character';
+import { RegionRating } from 'src/app/models/region';
 import { Venture } from 'src/app/models/venture';
 import { CharacterService } from 'src/app/services/character.service';
 import { GameService } from 'src/app/services/game.service';
@@ -19,6 +20,10 @@ export class LocationPanelComponent implements OnInit {
 
   getCharacter(): Character {
     return this._characterService.character;
+  }
+
+  getRatings(): RegionRating[] {
+    return this._gameService.getRatingsForCurrentRegion();
   }
 
   getVentures(): Venture[] {

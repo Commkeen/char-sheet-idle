@@ -2,6 +2,7 @@ import { VENTURE_LIBRARY } from "../staticData/ventureDefinitions";
 
 export class Venture {
   public name: string;
+  public region: string;
   public encounterName: string = null;
   public progress: number = 0;
   public progressMax: number = 100;
@@ -21,6 +22,7 @@ export class LocationVentures {
     VENTURE_LIBRARY.filter(def => {return def.region == name}).forEach(def => {
       const v = new Venture();
       v.name = def.name;
+      v.region = name;
       this.ventures.push(v);
     });
   }

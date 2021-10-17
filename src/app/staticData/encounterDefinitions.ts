@@ -1,6 +1,18 @@
 
 export type EncounterType = "general" | "combat"
 
+export class EncounterModifierDef {
+  public target: string;
+  public levelMultiplier: number;
+  public compound: boolean;
+
+  constructor(target: string, levelMultiplier: number, compound: boolean) {
+    this.target = target;
+    this.levelMultiplier = levelMultiplier;
+    this.compound = compound;
+  }
+}
+
 export class EncounterSkillDef {
   skill: string;
   strength: number;
@@ -11,6 +23,20 @@ export class EncounterSkillDef {
   }
 }
 
+export type EncounterRewardType = "rating" | "item"
+
+export class EncounterRewardDef {
+  public name: string;
+  public type: EncounterRewardType;
+  public chance: number = 100;
+  public amount: number = 1;
+
+  constructor(name: string, type: EncounterRewardType) {
+    this.name = name;
+    this.type = type;
+  }
+}
+
 export class EncounterDef {
   name: string;
   level: number;
@@ -18,8 +44,9 @@ export class EncounterDef {
   activeDesc: string;
   progressDegenPct: number = 7;
   staminaDrain: number = 1;
-  itemReward: string = null;
   skills: EncounterSkillDef[] = [];
+  modifiers: EncounterModifierDef[] = [];
+  rewards: EncounterRewardDef[] = [];
 
 
   constructor(name: string, level: number) {
@@ -40,7 +67,15 @@ export class EncounterDef {
   }
 
   item(item: string) {
-    this.itemReward = item;
+    const reward = new EncounterRewardDef(item, "item");
+    this.rewards.push(reward);
+    return this;
+  }
+
+  ratingReward(rating: string, amount: number) {
+    const reward = new EncounterRewardDef(rating, "rating");
+    reward.amount = amount;
+    this.rewards.push(reward);
     return this;
   }
 
@@ -51,6 +86,13 @@ export class EncounterDef {
       this.skills.push(def);
     }
     def.strength = strength;
+    return this;
+  }
+
+  addLocalRatingModifier(rating: string, multiplier: number, compound: boolean) {
+    let def = new EncounterModifierDef(rating, multiplier, compound);
+    this.modifiers.push(def);
+
     return this;
   }
 }
@@ -86,7 +128,8 @@ export function getEncounterDef(name: string) {
 export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("rat", 1)
     .item("shortbow"),
-  new CombatEncounterDef("slime mold", 1).resist("ranged"),
+  new CombatEncounterDef("slime mold", 1).resist("ranged")
+    .ratingReward("scouting", 70),
   new CombatEncounterDef("brutal rat", 2)
     .item("knife"),
   new CombatEncounterDef("wolf", 3),
@@ -108,7 +151,11 @@ export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("tomb lord", 20)
     .item("staff of ancients"),
 
+  new CombatEncounterDef("dark lord", 50)
+    .addLocalRatingModifier("control", 1.15, true),
+
   new EncounterDef("darkWards", 1)
     .setActiveDesc("dispelling warding glyphs")
     .addSkill("magic", 1)
+    .ratingReward("control", -80)
 ];

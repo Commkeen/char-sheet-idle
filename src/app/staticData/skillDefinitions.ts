@@ -5,6 +5,7 @@ export class SkillDef {
   public name: string;
   public stat: Stat = null;
   public cost: number = 1; // Multiplier
+  public costRatio: number = 1.15;
   public group: string = "other";
 
   constructor(name: string) {

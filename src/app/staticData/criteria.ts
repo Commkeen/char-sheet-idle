@@ -1,5 +1,5 @@
 
-export type CriteriaType = "upgrade" | "skill" | "item" | "stat" | "perk" | "level" | "ventureMastery" | "scouting" | "renown" | "infamy";
+export type CriteriaType = "upgrade" | "skill" | "item" | "stat" | "perk" | "level" | "ventureMastery" | "localRating";
 
 export class Criteria {
   public criteriaType: CriteriaType;
