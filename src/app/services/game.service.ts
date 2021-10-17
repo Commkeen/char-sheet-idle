@@ -95,6 +95,9 @@ export class GameService {
         this.startEncounter(venture);
       }
 
+      // Update progress max in case some multipliers have changed
+      venture.progressMax = this.calculateVentureProgressMax(venture);
+
       const encDef = this.getEncounterDef(venture.encounterName);
 
       const bestSkill = this._characterService.bestSkillForEncounter(encDef);
@@ -270,7 +273,23 @@ export class GameService {
     const encounter = def.getRandomEncounter();
     const encDef = this.getEncounterDef(encounter);
     venture.encounterName = encounter;
-    venture.progressMax = 15*Math.pow(encDef.level, 2.2);
+    venture.progressMax = this.calculateVentureProgressMax(venture);
+  }
+
+  calculateVentureProgressMax(venture: Venture): number {
+    const encDef = this.getEncounterDef(venture.encounterName);
+    let level = encDef.level;
+
+    encDef.modifiers.forEach(mod => {
+      const ratingRank = this.getRating(mod.target, venture.region).rank;
+      let multiplier = 1 + (mod.levelMultiplier - 1) * ratingRank;
+      if (mod.compound) {
+        multiplier = level * Math.pow(mod.levelMultiplier, ratingRank);
+      }
+      level = level * multiplier;
+    });
+
+    return 15*Math.pow(level, 2.2);
   }
 
   //======Die Operations======
