@@ -3,9 +3,9 @@
 }
 
 .character-sheet-header{
-  border-bottom: 1px solid darkgray;
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .character-sheet-footer{
-  border-top: 1px solid darkgray;
+  border-top: 1px solid var(--separator-color);
 }

@@ -3,18 +3,18 @@
 }
 
 .layout-header{
-  background-color: rgb(224, 224, 224);
-  border-bottom: 1px solid darkgray;
+  background-color: var(--background-color-secondary);
+  border-bottom: 1px solid var(--separator-color);
   font-size: 9pt;
   font-style: italic;
 }
 
 .layout-top{
-  border-bottom: 1px solid darkgray;
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .layout-center{
-  border-bottom: 1px solid darkgray;
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .layout-bottom{
@@ -22,7 +22,7 @@
 }
 
 .layout-left-bottom{
-  border-right: 1px solid darkgray;
+  border-right: 1px solid var(--separator-color);
 }
 
 .layout-right-bottom{

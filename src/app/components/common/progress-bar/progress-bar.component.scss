@@ -1,11 +1,11 @@
 .bar-outer {
-  background-color: rgb(201, 215, 235);
+  background-color: var(--background-color-secondary);
   border-radius: 3px;
   padding: 0px;
 }
 
 .bar-inner {
-  background-color: blue;
+  background-color: var(--accent-color);
   height: 0.3em;
   border-radius: 3px;
 }

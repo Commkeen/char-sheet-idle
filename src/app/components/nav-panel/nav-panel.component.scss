@@ -1,11 +1,11 @@
 .game-section {
-  border-right: 1px solid darkgray;
+  border-right: 1px solid var(--separator-color);
 }
 
 .nav-top {
   margin: 0.3em;
   padding: 0.3em;
-  border-bottom: 1px solid darkgray;
+  border-bottom: 1px solid var(--separator-color);
 }
 
 .region {

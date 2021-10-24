@@ -1,0 +1,31 @@
+
+$background-color-light: #ffffff;
+$background-color-dark: #17223b;
+
+$background-color-secondary-light: rgb(201, 215, 235);
+$background-color-secondary-dark: #303050;
+
+$accent-color-light: blue;
+$accent-color-dark: rgb(62, 161, 218);
+
+$text-color-light: #000000;
+$text-color-dark: #e6e6e6;
+
+$separator-color-light: #3c3c3c;
+$separator-color-dark: #405070;
+
+$button-border-light: darkslategray;
+$button-border-dark: rgb(174, 199, 199);
+
+$colors: (
+  --background-color: ($background-color-light, $background-color-dark),
+  --background-color-secondary: ($background-color-secondary-light, $background-color-secondary-dark),
+
+  --accent-color: ($accent-color-light, $accent-color-dark),
+
+  --text-color: ($text-color-light, $text-color-dark),
+
+  --separator-color: ($separator-color-light, $separator-color-dark),
+
+  --button-border-color: ($button-border-light, $button-border-dark)
+)
