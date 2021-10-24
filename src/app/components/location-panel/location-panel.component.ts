@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character';
+import { Currency } from 'src/app/models/currency';
 import { RegionRating } from 'src/app/models/region';
 import { Venture } from 'src/app/models/venture';
 import { CharacterService } from 'src/app/services/character.service';
@@ -28,6 +29,10 @@ export class LocationPanelComponent implements OnInit {
 
   getVentures(): Venture[] {
     return this._gameService.getVenturesForCurrentLocation();
+  }
+
+  getCurrencies(): Currency[] {
+    return this._characterService.currencies.currencies;
   }
 
   // ======Display Getters======

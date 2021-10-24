@@ -14,8 +14,12 @@ export class CurrencyDef {
   }
 }
 
+export function getCurrencyDef(name: string): CurrencyDef {
+  return CURRENCY_LIBRARY.find(x => x.name == name || x.displayName == name);
+}
 
 export const CURRENCY_LIBRARY: CurrencyDef[] = [
+  new CurrencyDef("gold"),
   new CurrencyDef("tattered map"),
   new CurrencyDef("goblin ear"),
 

@@ -23,7 +23,7 @@ export class EncounterSkillDef {
   }
 }
 
-export type EncounterRewardType = "rating" | "item"
+export type EncounterRewardType = "rating" | "item" | "currency"
 
 export class EncounterRewardDef {
   public name: string;
@@ -68,6 +68,12 @@ export class EncounterDef {
 
   item(item: string) {
     const reward = new EncounterRewardDef(item, "item");
+    this.rewards.push(reward);
+    return this;
+  }
+
+  currency(currency: string) {
+    const reward = new EncounterRewardDef(currency, "currency");
     this.rewards.push(reward);
     return this;
   }
@@ -127,11 +133,14 @@ export function getEncounterDef(name: string) {
 
 export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("rat", 1)
-    .item("shortbow"),
+    .item("shortbow")
+    .currency("tattered map"),
   new CombatEncounterDef("slime mold", 1).resist("ranged")
-    .ratingReward("scouting", 70),
+    .ratingReward("scouting", 70)
+    .currency("tattered map"),
   new CombatEncounterDef("brutal rat", 2)
-    .item("knife"),
+    .item("knife")
+    .currency("tattered map"),
   new CombatEncounterDef("wolf", 3),
   new CombatEncounterDef("felsprite", 2)
     .resist("melee").resist("ranged"),

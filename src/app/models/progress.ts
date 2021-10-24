@@ -1,5 +1,7 @@
 import { Stat } from "../common/gameConstants";
 
+
+// Stores progress that carries over between characters.
 export class Progress {
   public upgrades: UpgradeProgress = new UpgradeProgress();
   public unlockedStats: Stat[] = ["body"];

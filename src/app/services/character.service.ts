@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Stat } from '../common/gameConstants';
 import { Character, Perk, Skill } from '../models/character';
+import { Currency, CurrencyCollection } from '../models/currency';
 import { EncounterDef } from '../staticData/encounterDefinitions';
 import { getItemDef } from '../staticData/itemDefinitions';
 import { PERK_LIBRARY } from '../staticData/perkDefinitions';
@@ -23,6 +24,7 @@ export class CharacterService {
   public availablePerks: Perk[] = [];
 
   public items: string[] = [];
+  public currencies: CurrencyCollection = new CurrencyCollection();
 
   constructor(private _messageService: MessageService) { }
 
@@ -48,6 +50,11 @@ export class CharacterService {
 
     // TODO: Sell old items
     this.items = [];
+    this.currencies = new CurrencyCollection();
+
+    // Test
+    this.currencies.add("tattered map", 1);
+    this.currencies.add("goblin ear", 1);
 
     this.character.maxStamina = (this.character.stat("body")+2)*3;
     this.character.stamina = this.character.maxStamina;
@@ -222,6 +229,12 @@ export class CharacterService {
 
   hasItem(item: string): boolean {
     return this.items.indexOf(item) > -1;
+  }
+
+  // ======Currencies======
+
+  addCurrency(name: string, amount: number) {
+    this.currencies.add(name, amount);
   }
 
 

@@ -1,4 +1,4 @@
-<div class="game-section">
+<div fxLayout="column" class="game-section">
   <div fxLayout="row" class="region-status">
     <div fxFlex="33" fxLayout="column" class="region-status-item" *ngFor="let rating of getRatings()">
       <div fxFlex="90" fxLayout="row" class="rating-text">
@@ -8,17 +8,20 @@
       <progress-bar [value]="rating.progress" [max]="rating.progressMax"></progress-bar>
     </div>
   </div>
-  <div fxLayout="row" class="location-columns">
-    <div fxLayout="column" class="local-currencies">
+  <div fxFlex="grow" fxLayout="row" class="location-columns">
+    <div fxFlex="15" fxLayout="column" class="location-column local-currencies">
       Currencies
+      <div class="currency" fxLayout="row" *ngFor="let currency of getCurrencies()">
+        <div class="currency-name">{{currency.displayName}}</div>
+        <div class="currency-value">{{currency.amount}}/{{currency.maxAmount}}</div>
+      </div>
     </div>
-    <div fxLayout="column" class="local-upgrades">
-      Upgrades
+    <div fxFlex="30" fxLayout="column" class="local-actions">
+      Actions
     </div>
-    <div fxLayout="column" class="local-ventures">
+    <div fxFlex="grow" fxLayout="column" class="local-ventures">
       Ventures
       <div class="venture" fxLayout="row" *ngFor="let venture of getVentures()">
-        <div fxFlex="30"></div>
         <div fxFlex="30" fxLayout="row" class="venture-left">
           <game-button fxFlex="60" (click)="selectVenture(venture)">{{venture.name}}</game-button>
           <div fxFlex="40">{{venture.mastery}}</div>

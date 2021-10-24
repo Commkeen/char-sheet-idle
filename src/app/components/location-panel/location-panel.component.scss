@@ -3,13 +3,31 @@
   font-weight: bold;
 }
 
+
+
+.location-columns{
+  margin: 0.5em;
+}
+
+.location-column{
+  margin-right: 0.5em;
+}
+
+.local-currencies{
+  border-right: 1px solid var(--separator-color);
+}
+
 .local-ventures{
-  margin: 2.0em;
-  max-width: 60%;
+  margin-right: 2em;
+}
+
+.currency{
+  margin-bottom: 0.3em;
+  justify-content: space-between;
 }
 
 .venture{
-  margin: 1.8em;
+  margin-bottom: 0.6em;
 }
 
 .venture-left{
