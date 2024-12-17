@@ -12,6 +12,11 @@ export class CurrencyDef {
     this.baseMax = 10;
     this.displayRegion = null;
   }
+
+  setBaseMax(value: number): CurrencyDef {
+    this.baseMax = value;
+    return this;
+  }
 }
 
 export function getCurrencyDef(name: string): CurrencyDef {
@@ -19,8 +24,11 @@ export function getCurrencyDef(name: string): CurrencyDef {
 }
 
 export const CURRENCY_LIBRARY: CurrencyDef[] = [
+  new CurrencyDef("prowess"),
   new CurrencyDef("gold"),
   new CurrencyDef("tattered map"),
   new CurrencyDef("goblin ear"),
+  new CurrencyDef("brushwood"),
+  new CurrencyDef("lumber")
 
 ];

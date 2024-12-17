@@ -1,15 +1,27 @@
 import { Stat } from "../common/gameConstants";
 
 export type UpgradeType = "die" | "stat" | "statPoint" | "unlockRegion"
+export type UpgradeCategory = "shop" | "building"
 
 export class UpgradeDef {
+
+  // Identity
   public name: string;
+  public region: string = null;
+  public upgradeType: UpgradeType = null;
+  public upgradeCategory: UpgradeCategory = null;
+
+  // Costs
   public baseCost: number = 100;
+
+  // Requirements
+
+
+  // Effects
   public repeatable: boolean = true;
   public maxRank: number = 0;
   public needUpgrade: string = null;
-  public region: string = null;
-  public upgradeType: UpgradeType = null;
+
   public arg: any = null;
 
   public constructor(name: string) {
@@ -65,6 +77,9 @@ export function getUpgradeDef(name: string) {
 }
 
 export const UPGRADE_LIBRARY: UpgradeDef[] = [
+  new UpgradeDef("Sleeping Bag"),
+
+  /*
   new UpgradeDef("Upgrade die").setType("die"),
   new UpgradeDef("Bonus Stat Point").setType("statPoint").max(5),
   new UpgradeDef("Unlock agility").unlocksStat("agility"),
@@ -77,5 +92,6 @@ export const UPGRADE_LIBRARY: UpgradeDef[] = [
   new UpgradeDef("Cartographer").allRegions(),
   new UpgradeDef("Inn").allRegions(),
   new UpgradeDef("Statue").allRegions()
+  */
 
 ]

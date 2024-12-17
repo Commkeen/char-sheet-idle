@@ -1,0 +1,20 @@
+<div fxLayout="column" class="venture-btn" (click)="onClick($event)">
+  <div class="text">{{ getVenture().name }}</div>
+  <div *ngIf="isLocked()" class="venture-locked-requirements">
+    {{getUnlockRequirements()}}
+  </div>
+  <div *ngIf="!isLocked()">
+    <div class="venture-progress-bar-outer">
+      <div
+        class="venture-progress-bar-inner"
+        [style.width]="getProgressPercent() + '%'"
+      ></div>
+    </div>
+    <div class="xp-bar-outer">
+      <div
+        class="xp-bar-inner"
+        [style.width]="getExperiencePercent() + '%'"
+      ></div>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,7 @@ import { VentureDef, VENTURE_LIBRARY } from '../staticData/ventureDefinitions';
 import { CharacterService } from './character.service';
 import { MessageService } from './message.service';
 import { TimeService } from './time.service';
+import { RewardDef } from '../staticData/rewardDefinitions';
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,7 @@ export class GameService {
 
     this.locationVentures.forEach(lv => {
       this.ventures = this.ventures.concat(lv.ventures);
+      this.ventures = this.ventures.concat(lv.tasks);
     });
   }
 
@@ -89,6 +91,7 @@ export class GameService {
     else if (this.targetVenture != null) {
       const venture = this.ventures.find(x => x.name == this.targetVenture);
       if (venture == null) {return;}
+      const ventureDef = this.getVentureDef(venture.name);
 
       // If there isn't an encounter, init an encounter
       if (venture.encounterName == null) {
@@ -98,14 +101,17 @@ export class GameService {
       // Update progress max in case some multipliers have changed
       venture.progressMax = this.calculateVentureProgressMax(venture);
 
-      const encDef = this.getEncounterDef(venture.encounterName);
+      let encDef = this.getEncounterDef(venture.encounterName);
+      if (ventureDef.taskEncounterDef != null) {
+        encDef = ventureDef.taskEncounterDef;
+      }
 
       const bestSkill = this._characterService.bestSkillForEncounter(encDef);
       if (bestSkill != null) {
         const encSkill = encDef.skills.find(x => x.skill == bestSkill);
         const charSkillStr = character.skill(bestSkill).total();
         venture.progress += 6*encSkill.strength*charSkillStr*dT;
-        this._characterService.advanceSkill(bestSkill, dT);
+        //this._characterService.advanceSkill(bestSkill, dT);
       }
       else {
         venture.progress += dT;
@@ -118,11 +124,15 @@ export class GameService {
       if (venture.progress >= venture.progressMax) {
         venture.completions++;
         venture.progress = 0;
+
+        // TODO: Resolve perilous task
+
         if (encDef.encounterType == "combat") {
           this._messageService.addMessage("You slay the " + venture.encounterName + ".");
         }
 
         this.grantEncounterRewards(venture, encDef);
+        this.grantVentureRewards(venture);
 
         // Advance venture mastery rating on successful completion
         let masteryReward = 1; //TODO
@@ -133,7 +143,12 @@ export class GameService {
           venture.masteryProgress -= masteryNeeded;
         }
 
-        this.startEncounter(venture);
+        if (ventureDef.repeatable && this.canSelectVenture(venture)) {
+          this.startEncounter(venture);
+        }
+        else {
+          this.targetVenture = null;
+        }
       }
 
     }
@@ -141,7 +156,11 @@ export class GameService {
     // Degen venture progress
     this.ventures.forEach(x => {
       if (x.progress > 0 && (this.resting || this.targetVenture != x.name)) {
-        const encDef = this.getEncounterDef(x.encounterName);
+        const ventureDef = this.getVentureDef(x.name);
+        let encDef = this.getEncounterDef(x.encounterName);
+        if (ventureDef.taskEncounterDef != null) {
+          encDef = ventureDef.taskEncounterDef;
+        }
         const progDegen = x.progressMax*(encDef.progressDegenPct/100);
         x.progress -= progDegen*dT;
         if (x.progress <= 0) {
@@ -160,15 +179,27 @@ export class GameService {
     let xpReward = 65 + (Math.pow(encDef.level, 1.5)*15);
     this._characterService.gainXp(xpReward);
 
-    encDef.rewards.forEach(reward => {
-      if (reward.type == "item") {
-        this._characterService.gainItem(reward.name);
-      }
-      if (reward.type == "rating") {
-        this.advanceRating(venture.region, reward.name, reward.amount);
-      }
+    encDef.rewards.forEach(reward => {this.grantReward(reward, venture)});
+  }
 
-    });
+  grantVentureRewards(venture: Venture) {
+    const def = this.getVentureDef(venture.name);
+    def.rewards.forEach(reward => this.grantReward(reward, venture));
+  }
+
+  grantReward(reward: RewardDef, venture: Venture) {
+    if (reward.type == "item") {
+      this._characterService.gainItem(reward.name);
+    }
+    if (reward.type == "currency") {
+      this._characterService.addCurrency(reward.name, reward.amount);
+    }
+    if (reward.type == "rating") {
+      this.advanceRating(venture.region, reward.name, reward.amount);
+    }
+    if (reward.type == "unlockRegion") {
+      this.unlockRegion(reward.name);
+    }
   }
 
   // ======Character Operations======
@@ -190,9 +221,18 @@ export class GameService {
   }
 
   setCurrentRegion(name: string) {
-    const region = getRegionDef(name);
-    // TODO: Verify region was found?
-    this.currentRegion = region.internalName;
+    const regionDef = getRegionDef(name);
+    const regionInfo = this.getRegionInfo(regionDef.internalName);
+
+    // TODO: Verify region was found and valid, assert otherwise?
+    if (!regionInfo.unlocked) {return;}
+
+    this.currentRegion = regionDef.internalName;
+  }
+
+  unlockRegion(name: string) {
+    const regionInfo = this.getRegionInfo(name);
+    regionInfo.unlocked = true;
   }
 
   getRating(name: string, region: string): RegionRating {
@@ -252,8 +292,16 @@ export class GameService {
     return this.locationVentures.find(x => x.name == name).ventures;
   }
 
+  getTasksForLocation(name: string): Venture[] {
+    return this.locationVentures.find(x => x.name == name).tasks;
+  }
+
   getVenturesForCurrentLocation(): Venture[] {
     return this.getVenturesForLocation(this.currentRegion);
+  }
+
+  getTasksForCurrentLocation(): Venture[] {
+    return this.getTasksForLocation(this.currentRegion);
   }
 
   getVentureMastery(name: string): number {
@@ -265,19 +313,40 @@ export class GameService {
   }
 
   selectVenture(venture: Venture): void {
+    if (!this.canSelectVenture(venture)) {return;}
     this.targetVenture = venture.name;
+  }
+
+  selectTask(task: Venture): void {
+    if (!this.canSelectVenture(task)) {return;}
+    this.targetVenture = task.name;
+  }
+
+  canSelectVenture(venture: Venture): boolean {
+    if (venture.progress > 0) {return true;}
+    const def = this.getVentureDef(venture.name);
+    if (!this.allCriteriaMet(def.visiblityCriteria)) {return false;}
+    if (!this.allCriteriaMet(def.useCriteria)) {return false;}
+    if (!this.allCriteriaMet(def.costCriteria)) {return false;}
+    return true;
   }
 
   startEncounter(venture: Venture): void {
     const def = this.getVentureDef(venture.name);
     const encounter = def.getRandomEncounter();
     const encDef = this.getEncounterDef(encounter);
+    const spendSuccessful = this.spendCosts(def.costCriteria);
+    if (!spendSuccessful) {return;}
     venture.encounterName = encounter;
     venture.progressMax = this.calculateVentureProgressMax(venture);
   }
 
   calculateVentureProgressMax(venture: Venture): number {
-    const encDef = this.getEncounterDef(venture.encounterName);
+    const ventureDef = this.getVentureDef(venture.name);
+    let encDef = this.getEncounterDef(venture.encounterName);
+    if (ventureDef.taskEncounterDef != null) {
+      encDef = ventureDef.taskEncounterDef;
+    }
     let level = encDef.level;
 
     encDef.modifiers.forEach(mod => {
@@ -320,6 +389,21 @@ export class GameService {
 
   //======Criteria Operations======
 
+  spendCosts(costList: Criteria[]): boolean {
+    costList.forEach(x => this.spendCost(x));
+    return true;
+  }
+
+  spendCost(cost: Criteria): boolean {
+    switch (cost.criteriaType) {
+      case "currency":
+        return this._characterService.currencies.remove(cost.target, cost.value);
+      default:
+        this._messageService.addMessage("error: no spend handler for criteriatype " + cost.criteriaType);
+    }
+    return false;
+  }
+
   allCriteriaMet(criteriaList: Criteria[]): boolean {
     return criteriaList.every(x => this.criteriaMet(x));
   }
@@ -342,6 +426,8 @@ export class GameService {
         return this.ventureMasteryCriteriaMet(criteria);
       case "localRating":
         return this.localRatingCriteriaMet(criteria);
+      case "currency":
+        return this.currencyCriteriaMet(criteria);
       default:
         this._messageService.addMessage("error: no handler for criteriatype " + criteria.criteriaType);
     }
@@ -384,6 +470,10 @@ export class GameService {
 
   localRatingCriteriaMet(criteria: Criteria): boolean {
     return true;
+  }
+
+  currencyCriteriaMet(criteria: Criteria): boolean {
+    return this._characterService.currencies.has(criteria.target, criteria.value);
   }
 
 }

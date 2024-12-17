@@ -19,6 +19,7 @@
 
 .local-ventures{
   margin-right: 2em;
+  align-content: flex-start;
 }
 
 .currency{
@@ -27,7 +28,12 @@
 }
 
 .venture{
-  margin-bottom: 0.6em;
+  margin: 0.6em;
+  width: 130px;
+}
+
+.venture-button{
+  height: 40px;
 }
 
 .venture-left{

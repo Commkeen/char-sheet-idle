@@ -1,7 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Character } from 'src/app/models/character';
 import { CharacterService } from 'src/app/services/character.service';
-import { REGION_LIBRARY } from 'src/app/staticData/regionDefinitions';
+import { GameService } from 'src/app/services/game.service';
+import { getRegionDef, REGION_LIBRARY } from 'src/app/staticData/regionDefinitions';
 
 @Component({
   selector: 'app-nav-panel',
@@ -13,7 +14,7 @@ export class NavPanelComponent implements OnInit {
   @Output() selectRegion = new EventEmitter<string>();
   @Output() selectCharSheet = new EventEmitter<void>();
 
-  constructor(private _characterService: CharacterService) { }
+  constructor(private _characterService: CharacterService, private _gameService: GameService) { }
 
   ngOnInit(): void {
   }
@@ -31,8 +32,9 @@ export class NavPanelComponent implements OnInit {
     return this.getCharacter().creationComplete;
   }
 
-  get showRegionButtons() {
-    return this.getCharacter().creationComplete;
+  showRegionButton(region: string) {
+    const regionDef = getRegionDef(region);
+    return this.getCharacter().creationComplete && this._gameService.getRegionInfo(regionDef.internalName).unlocked;
   }
 
   // ======Click Handlers======

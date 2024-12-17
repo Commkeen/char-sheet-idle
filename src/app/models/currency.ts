@@ -1,3 +1,4 @@
+import { CostDef } from "../staticData/costDefinitions";
 import { getCurrencyDef } from "../staticData/currencyDefinitions";
 
 
@@ -58,5 +59,32 @@ export class CurrencyCollection {
     if (currency == null) {currency = this.initCurrency(name);}
     currency.maxAmount = newMax;
     if (currency.amount > currency.maxAmount) {currency.amount = currency.maxAmount;}
+  }
+
+  canAffordCost(cost: CostDef, level: number): boolean {
+    const totalCost = cost.getCostForLevel(level);
+    return this.has(cost.currency, totalCost);
+  }
+
+  canAffordCosts(costs: CostDef[], level: number): boolean {
+    costs.forEach(x => {
+      if (!this.canAffordCost(x, level)) {return false;}
+    });
+    return true;
+  }
+
+  spendCost(cost: CostDef, level: number): boolean {
+    const totalCost = cost.getCostForLevel(level);
+    if (!this.has(cost.currency, totalCost)) {return false;}
+    this.remove(cost.currency, totalCost);
+    return true;
+  }
+
+  spendCosts(costs: CostDef[], level: number): boolean {
+    let success = true;
+    costs.forEach(x => {
+      success = success && this.spendCost(x, level);
+    });
+    return success;
   }
 }

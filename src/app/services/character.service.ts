@@ -26,6 +26,8 @@ export class CharacterService {
   public items: string[] = [];
   public currencies: CurrencyCollection = new CurrencyCollection();
 
+  public unlockedRegions: string
+
   constructor(private _messageService: MessageService) { }
 
   setGameService(svc: GameService) {
@@ -191,9 +193,19 @@ export class CharacterService {
     }
   }
 
-  getSkillRankCost(skill: string, rank: number): number {
+  getSkillRankCost(skill: string, rank: number): number { //Old
     const def = getSkillDef(skill);
-    return 25 + (((rank*rank)-2)*45*def.cost);
+    return 25 + (((rank*rank)-2)*45);
+  }
+
+  buyNextSkillRank(skill: string): void {
+    const s = this.character.skill(skill);
+    const def = getSkillDef(s.name);
+    const nextRank = s.rank+1;
+    if (this.currencies.canAffordCost(def.cost, nextRank)) {
+      this.currencies.spendCost(def.cost, nextRank);
+      s.rank++;
+    }
   }
 
 

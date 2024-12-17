@@ -3,5 +3,9 @@
     <div *ngFor="let item of getInventory()">
       {{item}}
     </div>
+    <div class="currency" fxLayout="row" *ngFor="let currency of getCurrencies()">
+      <div class="currency-name">{{currency.displayName}}</div>
+      <div class="currency-value">{{currency.amount}}/{{currency.maxAmount}}</div>
+    </div>
   </div>
 </div>

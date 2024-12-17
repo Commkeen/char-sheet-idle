@@ -1,0 +1,59 @@
+.venture-btn {
+  display: flex;
+  border: 2px solid var(--button-border-color);
+  border-radius: 3px;
+  min-height: 1.4em;
+  font-size: 9pt;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+.text {
+  width: 100%;
+  height: 100%;
+  margin: 0.3em;
+  text-align: center;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.venture-locked-requirements {
+  width: 100%;
+  height: 100%;
+  margin: 0.3em;
+  text-align: center;
+  pointer-events: none;
+  font-weight: bold;
+  color: red;
+}
+
+.venture-progress-bar-outer {
+  background-color: var(--background-color-secondary);
+  border: 1px solid var(--button-border-color);
+  padding: 1px;
+  margin: 0.8em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+
+}
+
+.venture-progress-bar-inner {
+  background-color: var(--accent-color);
+  height: 0.7em;
+}
+
+.xp-bar-outer {
+  background-color: var(--background-color-secondary);
+  border-radius: 3px;
+  padding: 0px;
+  margin: 1.4em;
+  margin-top: 0.3em;
+  margin-bottom: 0.6em;
+}
+
+.xp-bar-inner {
+  background-color: var(--accent-color);
+  height: 0.3em;
+  border-radius: 3px;
+}

@@ -13,17 +13,25 @@ export class Venture {
 
 export class LocationVentures {
   public name: string;
-  public ventures: Venture[];
+  public ventures: Venture[]; // Repeatable ventures with encounters
+  public tasks: Venture[]; // Ventures without encounters
 
   init(name: string) {
     this.name = name;
     this.ventures = [];
+    this.tasks = [];
 
     VENTURE_LIBRARY.filter(def => {return def.region == name}).forEach(def => {
       const v = new Venture();
       v.name = def.name;
       v.region = name;
-      this.ventures.push(v);
+
+      if (def.category == "venture") {
+        this.ventures.push(v);
+      }
+      if (def.category == "task") {
+        this.tasks.push(v);
+      }
     });
   }
 }

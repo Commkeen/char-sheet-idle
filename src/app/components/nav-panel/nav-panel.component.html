@@ -4,7 +4,7 @@
   </div>
   <div class="nav-regions">
     <div class="region" *ngFor="let region of regions">
-      <game-button *ngIf="showRegionButtons" (click)="onSelectRegion(region)">{{region}}</game-button>
+      <game-button *ngIf="showRegionButton(region)" (click)="onSelectRegion(region)">{{region}}</game-button>
     </div>
   </div>
 </div>

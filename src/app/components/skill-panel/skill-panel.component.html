@@ -1,16 +1,56 @@
 <div class="game-section" *ngIf="getSkills() != null">
   <br />
+  <div class="body-skills">
+    <div class="body-attribute" fxLayout="row">
+      <div fxFlex="90">Body</div>
+      <div fxFlex="10">5</div>
+    </div>
+    <div
+      class="body-currency"
+      *ngIf="getProwess() as prowess"
+      fxLayout="column"
+    >
+      <div fxFlex="90" fxLayout="row" class="skill-text">
+        <div fxFlex="90">Prowess</div>
+        <div fxFlex="10">{{ prowess.amount }}/{{ prowess.maxAmount }}</div>
+      </div>
+      <progress-bar fxFlex="10" [value]="5" [max]="90"></progress-bar>
+    </div>
+    <div class="body-skill-list">
+      <div class="skill" fxLayout="row" *ngFor="let skill of getBodySkills()">
+        <div fxFlex="30" class="skill-total">
+          <game-button (click)="tryBuySkillRank(skill)">{{skillRankCurrencyCost(skill)}}</game-button>
+        </div>
+        <div fxFlex="70" fxLayout="column">
+          <div fxFlex="90" fxLayout="row" class="skill-text">
+            <div fxFlex="90">{{ skill.name }}</div>
+            <div fxFlex="10">{{ skill.rank }}</div>
+          </div>
+          <progress-bar
+            fxFlex="10"
+            [value]="skill.progress"
+            [max]="progressMax(skill)"
+          ></progress-bar>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
   <div class="combat-skills">
     <div class="skill" fxLayout="row" *ngFor="let skill of getCombatSkills()">
       <div fxFlex="10" class="skill-total">
-        {{skill.total()}}
+        {{ skill.total() }}
       </div>
       <div fxFlex="90" fxLayout="column">
         <div fxFlex="90" fxLayout="row" class="skill-text">
-          <div fxFlex="90">{{skill.name}}</div>
-          <div fxFlex="10">{{skill.rank}}</div>
+          <div fxFlex="90">{{ skill.name }}</div>
+          <div fxFlex="10">{{ skill.rank }}</div>
         </div>
-        <progress-bar fxFlex="10" [value]="skill.progress" [max]="progressMax(skill)"></progress-bar>
+        <progress-bar
+          fxFlex="10"
+          [value]="skill.progress"
+          [max]="progressMax(skill)"
+        ></progress-bar>
       </div>
     </div>
   </div>
@@ -18,14 +58,18 @@
   <div class="defense-skills">
     <div class="skill" fxLayout="row" *ngFor="let skill of getDefenseSkills()">
       <div fxFlex="10" class="skill-total">
-        {{skill.total()}}
+        {{ skill.total() }}
       </div>
       <div fxFlex="90" fxLayout="column">
         <div fxFlex="90" fxLayout="row" class="skill-text">
-          <div fxFlex="90">{{skill.name}}</div>
-          <div fxFlex="10">{{skill.rank}}</div>
+          <div fxFlex="90">{{ skill.name }}</div>
+          <div fxFlex="10">{{ skill.rank }}</div>
         </div>
-        <progress-bar fxFlex="10" [value]="skill.progress" [max]="progressMax(skill)"></progress-bar>
+        <progress-bar
+          fxFlex="10"
+          [value]="skill.progress"
+          [max]="progressMax(skill)"
+        ></progress-bar>
       </div>
     </div>
   </div>
@@ -33,14 +77,18 @@
   <div class="other-skills">
     <div class="skill" fxLayout="row" *ngFor="let skill of getOtherSkills()">
       <div fxFlex="10" class="skill-total">
-        {{skill.total()}}
+        {{ skill.total() }}
       </div>
       <div fxFlex="90" fxLayout="column">
         <div fxFlex="90" fxLayout="row" class="skill-text">
-          <div fxFlex="90">{{skill.name}}</div>
-          <div fxFlex="10">{{skill.rank}}</div>
+          <div fxFlex="90">{{ skill.name }}</div>
+          <div fxFlex="10">{{ skill.rank }}</div>
         </div>
-        <progress-bar fxFlex="10" [value]="skill.progress" [max]="progressMax(skill)"></progress-bar>
+        <progress-bar
+          fxFlex="10"
+          [value]="skill.progress"
+          [max]="progressMax(skill)"
+        ></progress-bar>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Stat } from 'src/app/common/gameConstants';
 import { Character } from 'src/app/models/character';
+import { Currency } from 'src/app/models/currency';
 import { CharacterService } from 'src/app/services/character.service';
 import { GameService } from 'src/app/services/game.service';
 import { DieDef } from 'src/app/staticData/dieDefinitions';
@@ -23,6 +24,10 @@ export class CharacterPanelComponent implements OnInit {
 
   getInventory(): string[] {
     return this._characterService.items;
+  }
+
+  getCurrencies(): Currency[] {
+    return this._characterService.currencies.currencies;
   }
 
   // ======Display Getters======

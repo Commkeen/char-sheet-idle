@@ -13,6 +13,7 @@ import { SkillPanelComponent } from './components/skill-panel/skill-panel.compon
 import { StatusPanelComponent } from './components/status-panel/status-panel.component';
 import { NavPanelComponent } from './components/nav-panel/nav-panel.component';
 import { CharacterSheetPanelComponent } from './components/character-sheet-panel/character-sheet-panel.component';
+import { VentureButtonComponent } from './components/common/venture-button/venture-button.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { CharacterSheetPanelComponent } from './components/character-sheet-panel
     SkillPanelComponent,
     StatusPanelComponent,
     NavPanelComponent,
-    CharacterSheetPanelComponent
+    CharacterSheetPanelComponent,
+    VentureButtonComponent
   ],
   imports: [
     BrowserModule,

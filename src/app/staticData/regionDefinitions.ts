@@ -15,6 +15,7 @@ export class RegionRatingDef {
 export class RegionDef {
   public name: string;
   public internalName: string;
+  public alwaysUnlocked: boolean = false;
   public ratings: RegionRatingDef[] = [];
 
   constructor(name: string) {
@@ -47,6 +48,11 @@ export class RegionDef {
     this.ratings.push(def);
     return this;
   }
+
+  startUnlocked() {
+    this.alwaysUnlocked = true;
+    return this;
+  }
 }
 
 export function getRegionDef(name: string) {
@@ -54,7 +60,7 @@ export function getRegionDef(name: string) {
 }
 
 export const REGION_LIBRARY: RegionDef[] = [
-  new RegionDef("The Village").setShortName("village"),
+  new RegionDef("The Village").setShortName("village").startUnlocked(),
   new RegionDef("Lost Woods").setShortName("woods"),
   new RegionDef("City of Isling").setShortName("city"),
   new RegionDef("Undermountain").setShortName("mountain"),

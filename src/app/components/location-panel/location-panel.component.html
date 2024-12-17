@@ -8,28 +8,27 @@
       <progress-bar [value]="rating.progress" [max]="rating.progressMax"></progress-bar>
     </div>
   </div>
+  <div fxLayout="row" class="region-tabs">
+    <div fxFlex="33" class="region-tabs-button">
+      <game-button>Tasks</game-button>
+    </div>
+    <div fxFlex="33" class="region-tabs-button">
+      <game-button>Shop</game-button>
+    </div>
+    <div fxFlex="33" class="region-tabs-button">
+      <game-button>Buildings</game-button>
+    </div>
+  </div>
   <div fxFlex="grow" fxLayout="row" class="location-columns">
-    <div fxFlex="15" fxLayout="column" class="location-column local-currencies">
-      Currencies
-      <div class="currency" fxLayout="row" *ngFor="let currency of getCurrencies()">
-        <div class="currency-name">{{currency.displayName}}</div>
-        <div class="currency-value">{{currency.amount}}/{{currency.maxAmount}}</div>
+    <div fxFlex="grow" fxLayout="row wrap" class="local-ventures">
+      <div class="venture" fxLayout="column" *ngFor="let venture of getVentures()">
+        <venture-button (click)="selectVenture(venture)" [venture]="venture"></venture-button>
       </div>
     </div>
     <div fxFlex="30" fxLayout="column" class="local-actions">
-      Actions
-    </div>
-    <div fxFlex="grow" fxLayout="column" class="local-ventures">
-      Ventures
-      <div class="venture" fxLayout="row" *ngFor="let venture of getVentures()">
-        <div fxFlex="30" fxLayout="row" class="venture-left">
-          <game-button fxFlex="60" (click)="selectVenture(venture)">{{venture.name}}</game-button>
-          <div fxFlex="40">{{venture.mastery}}</div>
-        </div>
-        <div fxFlex="70" class="venture-right" fxLayout="column">
-          <div>{{getEncounterDesc(venture.encounterName)}}</div>
-          <progress-bar [value]="venture.progress" [max]="venture.progressMax"></progress-bar>
-          <progress-bar [value]="venture.masteryProgress" [max]="5"></progress-bar>
+      <div class="venture" fxLayout="column" *ngFor="let venture of getTasks()">
+        <div class="venture-button">
+          <game-button (click)="selectTask(venture)">{{venture.name}}</game-button>
         </div>
       </div>
     </div>

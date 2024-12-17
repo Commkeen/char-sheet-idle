@@ -1,3 +1,5 @@
+import { RewardDef } from "./rewardDefinitions";
+
 
 export type EncounterType = "general" | "combat"
 
@@ -23,20 +25,6 @@ export class EncounterSkillDef {
   }
 }
 
-export type EncounterRewardType = "rating" | "item" | "currency"
-
-export class EncounterRewardDef {
-  public name: string;
-  public type: EncounterRewardType;
-  public chance: number = 100;
-  public amount: number = 1;
-
-  constructor(name: string, type: EncounterRewardType) {
-    this.name = name;
-    this.type = type;
-  }
-}
-
 export class EncounterDef {
   name: string;
   level: number;
@@ -46,7 +34,7 @@ export class EncounterDef {
   staminaDrain: number = 1;
   skills: EncounterSkillDef[] = [];
   modifiers: EncounterModifierDef[] = [];
-  rewards: EncounterRewardDef[] = [];
+  rewards: RewardDef[] = [];
 
 
   constructor(name: string, level: number) {
@@ -61,25 +49,32 @@ export class EncounterDef {
     return s.strength;
   }
 
+  noDrain() {
+    this.progressDegenPct = 0;
+    this.staminaDrain = 0;
+    return this;
+  }
+
   setActiveDesc(desc: string) {
     this.activeDesc = desc;
     return this;
   }
 
   item(item: string) {
-    const reward = new EncounterRewardDef(item, "item");
+    const reward = new RewardDef(item, "item");
     this.rewards.push(reward);
     return this;
   }
 
-  currency(currency: string) {
-    const reward = new EncounterRewardDef(currency, "currency");
+  currency(currency: string, amount: number = 1) {
+    const reward = new RewardDef(currency, "currency");
+    reward.amount = amount;
     this.rewards.push(reward);
     return this;
   }
 
   ratingReward(rating: string, amount: number) {
-    const reward = new EncounterRewardDef(rating, "rating");
+    const reward = new RewardDef(rating, "rating");
     reward.amount = amount;
     this.rewards.push(reward);
     return this;
@@ -141,9 +136,11 @@ export const ENCOUNTER_LIBRARY: EncounterDef[] = [
   new CombatEncounterDef("brutal rat", 2)
     .item("knife")
     .currency("tattered map"),
-  new CombatEncounterDef("wolf", 3),
+  new CombatEncounterDef("wolf", 3)
+    .currency("brushwood"),
   new CombatEncounterDef("felsprite", 2)
-    .resist("melee").resist("ranged"),
+    .resist("melee").resist("ranged")
+    .currency("brushwood"),
   new CombatEncounterDef("dire rat", 3),
   new CombatEncounterDef("goblin scout", 5),
   new CombatEncounterDef("goblin guard", 7),

@@ -14,12 +14,14 @@ export class RegionRating {
 
 export class Region {
   name: string; // internal name
+  unlocked: boolean = false;
   ratings: RegionRating[] = [];
 
   init(name: string) {
     this.name = name;
 
     const def = getRegionDef(name);
+    this.unlocked = def.alwaysUnlocked;
     def.ratings.forEach(x => {
       const rating = new RegionRating(x.name);
       rating.rank = x.initialRank;

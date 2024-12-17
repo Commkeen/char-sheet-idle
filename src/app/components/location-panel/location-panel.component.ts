@@ -31,6 +31,10 @@ export class LocationPanelComponent implements OnInit {
     return this._gameService.getVenturesForCurrentLocation();
   }
 
+  getTasks(): Venture[] {
+    return this._gameService.getTasksForCurrentLocation();
+  }
+
   getCurrencies(): Currency[] {
     return this._characterService.currencies.currencies;
   }
@@ -46,6 +50,10 @@ export class LocationPanelComponent implements OnInit {
   // ======Click Handlers======
   selectVenture(v: Venture): void {
     this._gameService.selectVenture(v);
+  }
+
+  selectTask(v: Venture): void {
+    this._gameService.selectTask(v);
   }
 
 }
