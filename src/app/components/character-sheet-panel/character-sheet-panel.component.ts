@@ -7,6 +7,7 @@ import { UpgradeService } from 'src/app/services/upgrade.service';
 import { getPerkDef } from 'src/app/staticData/perkDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-character-sheet-panel',
   templateUrl: './character-sheet-panel.component.html',
   styleUrls: ['./character-sheet-panel.component.scss']

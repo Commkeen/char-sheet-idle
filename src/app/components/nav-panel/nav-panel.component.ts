@@ -5,6 +5,7 @@ import { GameService } from 'src/app/services/game.service';
 import { getRegionDef, REGION_LIBRARY } from 'src/app/staticData/regionDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-nav-panel',
   templateUrl: './nav-panel.component.html',
   styleUrls: ['./nav-panel.component.scss']

@@ -1,6 +1,7 @@
 import { Component, ContentChild, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
+  standalone: false,
   selector: 'game-button',
   templateUrl: './game-button.component.html',
   styleUrls: ['./game-button.component.scss']

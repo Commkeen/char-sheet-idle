@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
+  standalone: false,
   selector: 'app-message-panel',
   templateUrl: './message-panel.component.html',
   styleUrls: ['./message-panel.component.scss']

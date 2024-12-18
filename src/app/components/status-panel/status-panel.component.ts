@@ -6,6 +6,7 @@ import { GameService } from 'src/app/services/game.service';
 import { getEncounterDef } from 'src/app/staticData/encounterDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-status-panel',
   templateUrl: './status-panel.component.html',
   styleUrls: ['./status-panel.component.scss']

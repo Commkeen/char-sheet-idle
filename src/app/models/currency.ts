@@ -67,10 +67,11 @@ export class CurrencyCollection {
   }
 
   canAffordCosts(costs: CostDef[], level: number): boolean {
+    let result = true;
     costs.forEach(x => {
-      if (!this.canAffordCost(x, level)) {return false;}
+      if (!this.canAffordCost(x, level)) {result = false;}
     });
-    return true;
+    return result;
   }
 
   spendCost(cost: CostDef, level: number): boolean {

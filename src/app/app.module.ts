@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 
 import { AppComponent } from './app.component';
 import { LocationPanelComponent } from './components/location-panel/location-panel.component';
@@ -14,6 +14,7 @@ import { StatusPanelComponent } from './components/status-panel/status-panel.com
 import { NavPanelComponent } from './components/nav-panel/nav-panel.component';
 import { CharacterSheetPanelComponent } from './components/character-sheet-panel/character-sheet-panel.component';
 import { VentureButtonComponent } from './components/common/venture-button/venture-button.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { VentureButtonComponent } from './components/common/venture-button/ventu
   ],
   imports: [
     BrowserModule,
-    FlexModule
+    CommonModule,
+    FlexLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]

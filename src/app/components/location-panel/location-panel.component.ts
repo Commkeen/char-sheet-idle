@@ -8,6 +8,7 @@ import { GameService } from 'src/app/services/game.service';
 import { getEncounterDef } from 'src/app/staticData/encounterDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-location-panel',
   templateUrl: './location-panel.component.html',
   styleUrls: ['./location-panel.component.scss']

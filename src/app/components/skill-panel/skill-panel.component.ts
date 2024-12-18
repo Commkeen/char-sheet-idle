@@ -6,6 +6,7 @@ import { GameService } from 'src/app/services/game.service';
 import { getSkillDef } from 'src/app/staticData/skillDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-skill-panel',
   templateUrl: './skill-panel.component.html',
   styleUrls: ['./skill-panel.component.scss']

@@ -7,6 +7,7 @@ import { GameService } from 'src/app/services/game.service';
 import { DieDef } from 'src/app/staticData/dieDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'app-character-panel',
   templateUrl: './character-panel.component.html',
   styleUrls: ['./character-panel.component.scss']

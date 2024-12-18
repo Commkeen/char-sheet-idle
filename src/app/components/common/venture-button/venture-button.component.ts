@@ -4,6 +4,7 @@ import { GameService } from 'src/app/services/game.service';
 import { VENTURE_LIBRARY } from 'src/app/staticData/ventureDefinitions';
 
 @Component({
+  standalone: false,
   selector: 'venture-button',
   templateUrl: './venture-button.component.html',
   styleUrls: ['./venture-button.component.scss']

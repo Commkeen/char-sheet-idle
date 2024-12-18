@@ -4,6 +4,7 @@ import { GameService } from './services/game.service';
 import { TimeService } from './services/time.service';
 
 @Component({
+  standalone: false,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
