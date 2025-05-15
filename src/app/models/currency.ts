@@ -54,6 +54,13 @@ export class CurrencyCollection {
     return currency.amount >= amount;
   }
 
+  set(name: string, amount: number) {
+    let currency = this.getCurrency(name);
+    if (currency == null) {currency = this.initCurrency(name);}
+    currency.amount = amount;
+    if (currency.amount > currency.maxAmount) {currency.amount = currency.maxAmount;}
+  }
+
   setMax(name: string, newMax: number) {
     let currency = this.getCurrency(name);
     if (currency == null) {currency = this.initCurrency(name);}

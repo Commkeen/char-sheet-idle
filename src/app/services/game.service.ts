@@ -106,15 +106,25 @@ export class GameService {
         encDef = ventureDef.taskEncounterDef;
       }
 
+      let tickProgress = 0;
       const bestSkill = this._characterService.bestSkillForEncounter(encDef);
       if (bestSkill != null) {
         const encSkill = encDef.skills.find(x => x.skill == bestSkill);
         const charSkillStr = character.skill(bestSkill).total();
-        venture.progress += 6*encSkill.strength*charSkillStr*dT;
+        tickProgress = 6*encSkill.strength*charSkillStr*dT;
         //this._characterService.advanceSkill(bestSkill, dT);
       }
       else {
-        venture.progress += dT;
+        tickProgress = dT;
+      }
+
+      venture.progress += tickProgress;
+
+      venture.masteryProgress += tickProgress*0.1;
+      let masteryNeeded = this.getVentureMasteryCost(venture.name, venture.mastery + 1);
+      if (venture.masteryProgress >= masteryNeeded) {
+        venture.mastery++;
+        venture.masteryProgress -= masteryNeeded;
       }
 
       character.stamina -= dT*encDef.staminaDrain;
@@ -135,6 +145,7 @@ export class GameService {
         this.grantVentureRewards(venture);
 
         // Advance venture mastery rating on successful completion
+        /*
         let masteryReward = 1; //TODO
         let masteryNeeded = this.getVentureMasteryCost(venture.name, venture.mastery + 1);
         venture.masteryProgress += masteryReward;
@@ -142,6 +153,7 @@ export class GameService {
           venture.mastery++;
           venture.masteryProgress -= masteryNeeded;
         }
+        */
 
         if (ventureDef.repeatable && this.canSelectVenture(venture)) {
           this.startEncounter(venture);
@@ -310,6 +322,10 @@ export class GameService {
 
   getVentureMasteryCost(name: string, level: number): number {
     return 5; //TODO
+  }
+
+  isTargetVenture(venture: Venture): boolean {
+    return this.targetVenture == venture.name;
   }
 
   selectVenture(venture: Venture): void {

@@ -31,7 +31,7 @@ export class EncounterDef {
   encounterType: EncounterType = "general";
   activeDesc: string;
   progressDegenPct: number = 7;
-  staminaDrain: number = 1;
+  staminaDrain: number = 0.3;
   skills: EncounterSkillDef[] = [];
   modifiers: EncounterModifierDef[] = [];
   rewards: RewardDef[] = [];

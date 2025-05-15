@@ -49,6 +49,10 @@ export class VentureButtonComponent implements OnInit {
     return !this._gameService.allCriteriaMet(def.useCriteria);
   }
 
+  isTarget(): boolean {
+    return this._gameService.isTargetVenture(this.venture);
+  }
+
   getUnlockRequirements(): string {
     let def = this._gameService.getVentureDef(this.venture.name);
     let criteriaList = def.useCriteria;

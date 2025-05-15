@@ -1,0 +1,34 @@
+<div
+  fxLayout="row"
+  [class]="{'venture-list-row': true, 'active': isTarget()}"
+  (click)="onClick($event)">
+  <div *ngIf="isLocked()" class="venture-locked-requirements">
+    {{getUnlockRequirements()}}
+  </div>
+  <div fxFill *ngIf="!isLocked()">
+    <div fxLayout="column">
+      <div fxFlex="20" class="row-title">
+        {{getVenture().name}}
+      </div>
+      <div fxFlex="90" fxLayout="row" class="row-body">
+        <div fxFlex="80" fxLayout="column" class="row-left">
+          <div class="venture-progress-bar-outer">
+            <div
+              class="venture-progress-bar-inner"
+              [style.width]="getProgressPercent() + '%'"
+            ></div>
+          </div>
+          <div class="xp-bar-outer">
+            <div
+              class="xp-bar-inner"
+              [style.width]="getExperiencePercent() + '%'"
+            ></div>
+          </div>
+        </div>
+        <div fxFlex="10" class="row-right">
+          <div class="mastery">{{getVenture().mastery}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

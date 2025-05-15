@@ -1,0 +1,18 @@
+<div class="game-section">
+  <div class="resource-list">
+    <div class="currency" fxLayout="row" *ngFor="let currency of getCurrencies()">
+      <div fxFill fxLayout="column">
+        <div fxFlex="90" fxLayout="row" class="currency-text">
+          <div fxFlex="80">{{currency.name}}</div>
+          <div fxFlex="20" *ngIf="currency.maxAmount <= 0">{{currency.amount}}</div>
+          <div fxFlex="20" *ngIf="currency.maxAmount > 0">{{currency.amount}}/{{currency.maxAmount}}</div>
+        </div>
+        <progress-bar
+          fxFlex="10"
+          [value]="currency.amount"
+          [max]="currency.maxAmount"
+        ></progress-bar>
+      </div>
+    </div>
+  </div>
+</div>

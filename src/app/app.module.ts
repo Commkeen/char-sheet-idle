@@ -14,7 +14,9 @@ import { StatusPanelComponent } from './components/status-panel/status-panel.com
 import { NavPanelComponent } from './components/nav-panel/nav-panel.component';
 import { CharacterSheetPanelComponent } from './components/character-sheet-panel/character-sheet-panel.component';
 import { VentureButtonComponent } from './components/common/venture-button/venture-button.component';
+import { VentureListRowComponent } from './components/common/venture-list-row/venture-list-row.component';
 import { CommonModule } from '@angular/common';
+import { ResourcePanelComponent } from './components/resource-panel/resource-panel.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { CommonModule } from '@angular/common';
     StatusPanelComponent,
     NavPanelComponent,
     CharacterSheetPanelComponent,
-    VentureButtonComponent
+    VentureButtonComponent,
+    VentureListRowComponent,
+    ResourcePanelComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,8 @@
-<div fxLayout="column" class="venture-btn" (click)="onClick($event)">
+<div
+  fxLayout="column"
+  class="venture-btn"
+  *ngClass="{'active': isTarget()}"
+  (click)="onClick($event)">
   <div class="text">{{ getVenture().name }}</div>
   <div *ngIf="isLocked()" class="venture-locked-requirements">
     {{getUnlockRequirements()}}

@@ -250,4 +250,24 @@ export class CharacterService {
   }
 
 
+
+  // ======Vitals=======
+
+  setStamina(amount: number) {
+    this.currencies.set("stamina", amount);
+  }
+
+  getStamina() {
+    return this.currencies.getCurrency("stamina").amount;
+  }
+
+  setMaxStamina(amount: number) {
+    this.currencies.setMax("stamina", amount);
+  }
+
+  getMaxStamina() {
+    return this.currencies.getCurrency("stamina").maxAmount;
+  }
+
+
 }

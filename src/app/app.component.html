@@ -1,13 +1,14 @@
 <div fxLayout="column" class="layout-container darkTheme">
   <div fxFlex="none" class="layout-header">
-    Character Sheet Idle 0.1 --- Work in progress
+    Hero and Apprentice 0.1 --- Work in progress
   </div>
   <div fxFlex="none" class="layout-top">
     <app-status-panel></app-status-panel>
   </div>
   <div fxFlex="80" class="layout-center">
     <div fxFlex="none" class="layout-center-left">
-      <app-nav-panel (selectCharSheet)="onSelectCharSheet()" (selectRegion)="onSelectRegion($event)"></app-nav-panel>
+      <app-nav-panel *ngIf="false" (selectCharSheet)="onSelectCharSheet()" (selectRegion)="onSelectRegion($event)"></app-nav-panel>
+      <app-resource-panel *ngIf="true"></app-resource-panel>
     </div>
     <div fxFlex="80" class="layout-center-center">
       <app-location-panel *ngIf="showLocation"></app-location-panel>

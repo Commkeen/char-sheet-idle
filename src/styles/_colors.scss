@@ -17,6 +17,9 @@ $separator-color-dark: #405070;
 $button-border-light: darkslategray;
 $button-border-dark: rgb(174, 199, 199);
 
+$button-border-active-light: rgb(69, 189, 189);
+$button-border-active-dark: rgb(234, 255, 255);
+
 $colors: (
   --background-color: ($background-color-light, $background-color-dark),
   --background-color-secondary: ($background-color-secondary-light, $background-color-secondary-dark),
@@ -27,5 +30,6 @@ $colors: (
 
   --separator-color: ($separator-color-light, $separator-color-dark),
 
-  --button-border-color: ($button-border-light, $button-border-dark)
+  --button-border-color: ($button-border-light, $button-border-dark),
+  --button-border-color-active: ($button-border-active-light, $button-border-active-dark),
 )
